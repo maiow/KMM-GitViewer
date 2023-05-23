@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="micro_margin">4dp</dimen>
+    <dimen name="mini_margin">8dp</dimen>
+    <dimen name="standard_margin">16dp</dimen>
+    <dimen name="double_margin">32dp</dimen>
+</resources>

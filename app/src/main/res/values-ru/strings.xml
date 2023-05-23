@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Git Test</string>
+    <string name="token">Персональный аксесс токен</string>
+    <string name="sign_in">Войти</string>
+    <string name="invalid_token">Неверный токен</string>
+    <string name="repositories">Репозитории</string>
+    <string name="connection_error">Ошибка соединения</string>
+    <string name="check_network">Проверьте соединение с Интернетом</string>
+    <string name="empty">Пусто</string>
+    <string name="no_repositories">В настоящее время репозиториев нет</string>
+    <string name="retry">Повторить попытку</string>
+    <string name="refresh">Обновить</string>
+    <string name="logout">Выйти</string>
+    <string name="error">Ошибка</string>
+    <string name="error_description">"Ошибка в данных / в коде \n информация для разработчиков \n %s</string>
+    <string name="ok">ОК</string>
+    <string name="error_with_description">Ошибка %1$s</string>
+    <string name="something_error">Какая-то ошибка</string>
+    <string name="check_your_something">Возможно, сбой в работе сервера или необходимо обновить версию приложения</string>
+    <string name="logo">логотип</string>
+    <string name="license">Лицензия</string>
+    <string name="no_license">Лицензии нет</string>
+    <plurals name="stars">
+        <item quantity="one">%1$d звезда</item>
+        <item quantity="few">%1$d звезды</item>
+        <item quantity="many">%1$d звезд</item>
+        <item quantity="other">%1$d звезд</item>
+    </plurals>
+    <plurals name="forks">
+        <item quantity="one">%1$d форк</item>
+        <item quantity="few">%1$d форка</item>
+        <item quantity="many">%1$d форков</item>
+        <item quantity="other">%1$d форков</item>
+    </plurals>
+    <plurals name="watchers">
+        <item quantity="one">%1$d вотчер</item>
+        <item quantity="few">%1$d вотчера</item>
+        <item quantity="many">%1$d вотчеров</item>
+        <item quantity="other">%1$d вотчеров</item>
+    </plurals>
+    <string name="logout_title">Вы уверены, что хотите выйти?</string>
+    <string name="logout_message">Все локальные данные будут удалены.</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="no_readme">Нет README.md</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background">#0D1117</color>
+    <color name="grey_light">#565656</color>
+    <color name="accent">#438440</color>
+    <color name="status_bar">#161B22</color>
+    <color name="secondary">#58A6FF</color>
+    <color name="grey">#21262D</color>
+    <color name="error">#B00020</color>
+    <color name="connection_error">#CB4F4F</color>
+    <color name="white_50_opacity">#80FFFFFF</color>
+    <color name="yellow">#F4E264</color>
+    <color name="lilac">#A37AEE</color>
+
+</resources>

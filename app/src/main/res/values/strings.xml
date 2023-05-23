@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name" translatable="false">Git Test</string>
+    <string name="token">Personal access token</string>
+    <string name="sign_in">Sign In</string>
+    <string name="invalid_token">Invalid token</string>
+    <string name="repositories">Repositories</string>
+    <string name="connection_error">Connection error</string>
+    <string name="check_network">Check your Internet connection</string>
+    <string name="empty">Empty</string>
+    <string name="no_repositories">No repositories at the moment</string>
+    <string name="retry">Retry</string>
+    <string name="refresh">Refresh</string>
+    <string name="logout">Logout</string>
+    <string name="error">Error</string>
+    <string name="error_description">"Error data / error code \n information for developers \n %s</string>
+    <string name="ok">OK</string>
+    <string name="error_with_description">Error %1$s</string>
+    <string name="something_error">Something error</string>
+    <string name="check_your_something">Could be server unavailability or you need to update application version</string>
+    <string name="logo">logo</string>
+    <string name="license">License</string>
+    <string name="no_license">No license</string>
+    <plurals name="stars">
+        <item quantity="one">%1$d star</item>
+        <item quantity="other">%1$d stars</item>
+    </plurals>
+    <plurals name="forks">
+        <item quantity="one">%1$d fork</item>
+        <item quantity="other">%1$d forks</item>
+    </plurals>
+    <plurals name="watchers">
+        <item quantity="one">%1$d watcher</item>
+        <item quantity="other">%1$d watchers</item>
+    </plurals>
+    <string name="logout_title">Are you sure you want to logout?</string>
+    <string name="logout_message">All local data will be deleted.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_readme">No README.md</string>
+
+</resources>
