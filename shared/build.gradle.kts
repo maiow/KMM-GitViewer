@@ -1,9 +1,18 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.louiscad.complete-kotlin")
+    kotlin("plugin.serialization")
 }
 
+//@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
+//   targetHierarchy.default()
+//
+//    android()
+//    ios()
+//    iosSimulatorArm64()
+
     android {
         compilations.all {
             kotlinOptions {
@@ -11,7 +20,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -19,17 +28,31 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
+            //isStatic = true
         }
     }
 
+    val ktorVersion = "2.3.0"
+
     sourceSets {
         val commonMain by getting
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonMain.dependencies {
+            implementation("io.ktor:ktor-client-core:$ktorVersion")
+            implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
         }
+
+        val commonTest by getting
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
+
         val androidMain by getting
+        androidMain.dependencies {
+            implementation("io.ktor:ktor-client-android:$ktorVersion")
+            implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06")
+        }
+
         val androidUnitTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -39,6 +62,9 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -49,9 +75,17 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
+
+        val shared by creating {
+            dependencies {
+                implementation("com.russhwolf:multiplatform-settings:1.0.0")
+            }
+            androidMain.dependsOn(this)
+            iosMain.dependsOn(this)
+            commonMain.dependsOn(this)
+        }
     }
 }
-
 android {
     namespace = "com.mivanovskaya.gitviewer.shared"
     compileSdk = 33

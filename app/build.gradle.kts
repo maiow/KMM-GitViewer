@@ -65,8 +65,6 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.46")
     kapt("com.google.dagger:hilt-android-compiler:2.45")
 
-    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06")
-
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("org.jetbrains:markdown:0.4.1")
     implementation("com.github.bumptech.glide:glide:4.15.1")

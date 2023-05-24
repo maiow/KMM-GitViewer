@@ -9,6 +9,7 @@ import com.mivanovskaya.gitviewer.androidapp.domain.model.UserInfo
 import com.mivanovskaya.gitviewer.androidapp.domain.toListRepo
 import com.mivanovskaya.gitviewer.androidapp.domain.toRepoDetails
 import com.mivanovskaya.gitviewer.androidapp.domain.toUserInfo
+import com.mivanovskaya.gitviewer.shared.KeyValueStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -16,9 +17,10 @@ import javax.inject.Inject
 class AppRepositoryImpl @Inject constructor(
     private val repositoriesApi: RepositoriesApi,
     private val userApi: UserContentApi,
-    private val keyValueStorage: KeyValueStorage,
-    private val ioDispatcher: CoroutineDispatcher
-): AppRepository {
+    private val ioDispatcher: CoroutineDispatcher,
+) : AppRepository {
+
+    private val keyValueStorage = KeyValueStorage
 
     override suspend fun getRepositories(): List<Repo> = withContext(ioDispatcher) {
         repositoriesApi.getRepositories(keyValueStorage.login ?: "", REPOS_QUANTITY, PAGES)

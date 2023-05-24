@@ -1,7 +1,7 @@
 package com.mivanovskaya.gitviewer.androidapp.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.mivanovskaya.gitviewer.androidapp.data.KeyValueStorage
+import com.mivanovskaya.gitviewer.shared.KeyValueStorage
 import com.mivanovskaya.gitviewer.androidapp.data.api.RepositoriesApi
 import dagger.Module
 import dagger.Provides
@@ -19,18 +19,18 @@ class RepositoriesApiModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(
-        keyValueStorage: KeyValueStorage
-    ): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor { chain ->
+    fun provideOkHttpClient(): OkHttpClient {
+        //val keyValueStorage = KeyValueStorage()
+        return OkHttpClient.Builder().addInterceptor { chain ->
             val request =
                 chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${keyValueStorage.authToken}")
+                    .addHeader("Authorization", "Bearer ${KeyValueStorage.authToken}")
                     .addHeader("X-GitHub-Api-Version", "2022-11-28")
                     .addHeader("Accept", "application/vnd.github+json")
                     .build()
             chain.proceed(request)
         }.build()
+    }
 
     @Provides
     @Singleton
