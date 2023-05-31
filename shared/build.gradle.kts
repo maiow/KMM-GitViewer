@@ -28,17 +28,22 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
-            //isStatic = true
         }
     }
-
+    val coroutinesVersion = "1.7.0"
     val ktorVersion = "2.3.0"
+    val napierVersion = "2.6.1"
 
     sourceSets {
         val commonMain by getting
         commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             implementation("io.ktor:ktor-client-core:$ktorVersion")
             implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+            implementation("io.ktor:ktor-client-auth:$ktorVersion")
+            implementation("io.ktor:ktor-client-cio:$ktorVersion")
+            implementation("io.ktor:ktor-client-logging:$ktorVersion")
+            implementation("io.github.aakira:napier:$napierVersion")
             implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
         }
 
@@ -50,6 +55,7 @@ kotlin {
         val androidMain by getting
         androidMain.dependencies {
             implementation("io.ktor:ktor-client-android:$ktorVersion")
+            implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
             implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06")
         }
 

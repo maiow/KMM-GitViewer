@@ -1,4 +1,4 @@
-package com.mivanovskaya.gitviewer.androidapp.data.dto
+package com.mivanovskaya.gitviewer.shared.data.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

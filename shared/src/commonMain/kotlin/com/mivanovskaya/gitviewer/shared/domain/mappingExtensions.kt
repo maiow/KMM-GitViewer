@@ -1,12 +1,12 @@
-package com.mivanovskaya.gitviewer.androidapp.domain
+package com.mivanovskaya.gitviewer.shared.domain
 
-import com.mivanovskaya.gitviewer.androidapp.data.dto.LicenseDto
-import com.mivanovskaya.gitviewer.androidapp.data.dto.RepoDto
-import com.mivanovskaya.gitviewer.androidapp.data.dto.UserInfoDto
-import com.mivanovskaya.gitviewer.androidapp.domain.model.License
-import com.mivanovskaya.gitviewer.androidapp.domain.model.Repo
-import com.mivanovskaya.gitviewer.androidapp.domain.model.RepoDetails
-import com.mivanovskaya.gitviewer.androidapp.domain.model.UserInfo
+import com.mivanovskaya.gitviewer.shared.data.dto.LicenseDto
+import com.mivanovskaya.gitviewer.shared.data.dto.RepoDto
+import com.mivanovskaya.gitviewer.shared.data.dto.UserInfoDto
+import com.mivanovskaya.gitviewer.shared.domain.model.License
+import com.mivanovskaya.gitviewer.shared.domain.model.Repo
+import com.mivanovskaya.gitviewer.shared.domain.model.RepoDetails
+import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
 
 fun UserInfoDto.toUserInfo() = UserInfo(login)
 

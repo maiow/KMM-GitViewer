@@ -3,7 +3,7 @@ package com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.ada
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mivanovskaya.gitviewer.androidapp.R
-import com.mivanovskaya.gitviewer.androidapp.domain.model.Repo
+import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.androidapp.databinding.RepositoriesViewHolderBinding
 
 class RepoViewHolder(private val binding: RepositoriesViewHolderBinding) :

@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.databinding.FragmentRepositoriesListBinding
-import com.mivanovskaya.gitviewer.androidapp.domain.model.Repo
+import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.androidapp.presentation.base.BaseFragment
 import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.RepositoriesListViewModel.Companion.NO_INTERNET
 import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.RepositoriesListViewModel.State
@@ -98,7 +98,7 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
 
     private fun setRetryButton() {
         binding.retryButton.setOnClickListener {
-            viewModel.onRetryButtonClick()
+        //    viewModel.onRetryButtonClick()
         }
     }
 
@@ -118,7 +118,7 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
         dialog.setTitle(R.string.logout_title)
             .setMessage(R.string.logout_message)
             .setPositiveButton(R.string.yes) { _, _ ->
-                viewModel.onLogoutButtonPressed()
+               // viewModel.onLogoutButtonPressed()
                 navigateToAuth()
             }
             .setNegativeButton(R.string.no) { _, _ ->

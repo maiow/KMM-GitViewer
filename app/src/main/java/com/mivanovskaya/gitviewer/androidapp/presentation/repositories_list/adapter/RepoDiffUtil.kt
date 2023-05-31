@@ -1,7 +1,7 @@
 package com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.mivanovskaya.gitviewer.androidapp.domain.model.Repo
+import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 
 class RepoDiffUtil : DiffUtil.ItemCallback<Repo>() {
 

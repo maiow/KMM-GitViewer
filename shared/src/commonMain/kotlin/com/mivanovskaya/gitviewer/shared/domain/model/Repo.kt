@@ -1,4 +1,4 @@
-package com.mivanovskaya.gitviewer.androidapp.domain.model
+package com.mivanovskaya.gitviewer.shared.domain.model
 
 data class Repo(
     val description: String?,

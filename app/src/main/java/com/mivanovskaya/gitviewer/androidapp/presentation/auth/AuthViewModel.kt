@@ -3,9 +3,10 @@ package com.mivanovskaya.gitviewer.androidapp.presentation.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mivanovskaya.gitviewer.androidapp.R
-import com.mivanovskaya.gitviewer.androidapp.domain.AppRepository
+import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue.StringResource
+import com.mivanovskaya.gitviewer.shared.data.AppRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
@@ -15,11 +16,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
-    private val repository: AppRepository
-) : ViewModel() {
+class AuthViewModel @Inject constructor()
+    //private val repository: AppRepository
+    : ViewModel() {
+
+    @Singleton
+    private val repository: AppRepository = AppRepositoryImpl()
 
     private val token: MutableStateFlow<String?> = MutableStateFlow(null)
 

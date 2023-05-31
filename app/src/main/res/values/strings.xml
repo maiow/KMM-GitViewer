@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Git Test</string>
+    <string name="app_name" translatable="false">GitHub Viewer</string>
     <string name="token">Personal access token</string>
     <string name="sign_in">Sign In</string>
     <string name="invalid_token">Invalid token</string>
