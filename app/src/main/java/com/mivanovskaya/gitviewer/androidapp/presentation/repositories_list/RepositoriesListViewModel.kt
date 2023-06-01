@@ -33,6 +33,7 @@ class RepositoriesListViewModel(private val repository: AppRepository) : ViewMod
                     _state.value = State.Empty
                 else
                     _state.value = State.Loaded(repos)
+                //TODO: поймать и обработать ошибки сети из Ktor
             } catch (e: IOException) {
                 handleNetworkException()
             } catch (e: Exception) {

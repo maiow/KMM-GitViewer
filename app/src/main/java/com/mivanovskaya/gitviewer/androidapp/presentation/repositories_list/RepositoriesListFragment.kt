@@ -63,7 +63,10 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
             if ((state is State.Error) && (state.error != NO_INTERNET)) {
                 commonOtherError.somethingError.isVisible = true
                 commonOtherError.errorDescription.text =
-                    getString(R.string.error_with_description, state.error)
+                    if (state.error != "null") getString(
+                        R.string.error_with_description, state.error
+                    )
+                    else getString(R.string.error)
             }
 
             recycler.isVisible = (state is State.Loaded)
@@ -74,16 +77,13 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
     }
 
     private fun submitDataToAdapter(state: State) {
-        if (state is State.Loaded)
-            adapter.submitList(state.repos)
+        if (state is State.Loaded) adapter.submitList(state.repos)
         else adapter.submitList(emptyList())
     }
 
     private fun setRetryButtonText(state: State) {
-        binding.retryButton.text =
-            if (state is State.Empty)
-                getString(R.string.refresh)
-            else getString(R.string.retry)
+        binding.retryButton.text = if (state is State.Empty) getString(R.string.refresh)
+        else getString(R.string.retry)
     }
 
     private fun onItemClick(item: Repo) {
@@ -110,16 +110,14 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
 
     private fun setLogoutAlertDialog() {
         val dialog = MaterialAlertDialogBuilder(
-            requireContext(),
-            R.style.MyThemeOverlay_Material_MaterialAlertDialog
+            requireContext(), R.style.MyThemeOverlay_Material_MaterialAlertDialog
         )
         dialog.setTitle(R.string.logout_title)
             .setMessage(R.string.logout_message)
             .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.onLogoutButtonPressed()
                 navigateToAuth()
-            }
-            .setNegativeButton(R.string.no) { _, _ ->
+            }.setNegativeButton(R.string.no) { _, _ ->
                 dialog.create().hide()
             }
         dialog.create().show()

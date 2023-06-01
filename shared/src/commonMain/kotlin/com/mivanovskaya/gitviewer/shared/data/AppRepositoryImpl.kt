@@ -5,8 +5,10 @@ import com.mivanovskaya.gitviewer.shared.data.dto.RepoDto
 import com.mivanovskaya.gitviewer.shared.data.dto.UserInfoDto
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import com.mivanovskaya.gitviewer.shared.domain.model.Repo
+import com.mivanovskaya.gitviewer.shared.domain.model.RepoDetails
 import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
 import com.mivanovskaya.gitviewer.shared.domain.toListRepo
+import com.mivanovskaya.gitviewer.shared.domain.toRepoDetails
 import com.mivanovskaya.gitviewer.shared.domain.toUserInfo
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -29,14 +31,14 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
-class AppRepositoryImpl : AppRepository {
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-    private val keyValueStorage = KeyValueStorage
+class AppRepositoryImpl(
+    private val ioDispatcher: CoroutineDispatcher,
+    private val keyValueStorage: KeyValueStorage
+) : AppRepository {
+
     private val client = HttpClient(CIO) {
         install(Auth) {
             bearer {
@@ -78,7 +80,6 @@ class AppRepositoryImpl : AppRepository {
         keyValueStorage.authToken = token
         updateBearerCredentials(token)
         val userInfoDto: UserInfoDto = client.get(USER_URL).body()
-        Napier.v("userInfoDto: $client")
         userInfoDto.toUserInfo()
     }
 
@@ -90,8 +91,27 @@ class AppRepositoryImpl : AppRepository {
                 parameters.append("page", PAGES)
             }
         }.body()
-        Napier.v("repoDto: $client")
         repos.toListRepo()
+    }
+
+    override suspend fun getRepository(repoId: String): RepoDetails = withContext(ioDispatcher) {
+        val repo: RepoDto = client.get(REPOS_URL) {
+            url {
+                appendPathSegments(keyValueStorage.login ?: "", repoId)
+            }
+        }.body()
+        repo.toRepoDetails()
+    }
+
+    override suspend fun getRepositoryReadme(
+        ownerName: String, repositoryName: String, branchName: String
+    ): String {
+        val readme: String = client.get(USER_CONTENT_URL) {
+            url {
+                appendPathSegments(ownerName, repositoryName, branchName, "README.md")
+            }
+        }.body()
+        return readme
     }
 
     override fun getToken() = keyValueStorage.authToken
@@ -117,6 +137,8 @@ class AppRepositoryImpl : AppRepository {
     companion object {
         private const val USER_URL = "https://api.github.com/user"
         private const val USERS_URL = "https://api.github.com/users"
+        private const val REPOS_URL = "https://api.github.com/repos"
+        private const val USER_CONTENT_URL = "https://raw.githubusercontent.com"
         private const val REPOS_QUANTITY = "10"
         private const val PAGES = "1"
     }
