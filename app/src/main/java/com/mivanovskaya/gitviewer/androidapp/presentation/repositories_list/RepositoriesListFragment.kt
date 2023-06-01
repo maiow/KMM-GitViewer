@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -12,18 +11,17 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.databinding.FragmentRepositoriesListBinding
-import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.androidapp.presentation.base.BaseFragment
 import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.RepositoriesListViewModel.Companion.NO_INTERNET
 import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.RepositoriesListViewModel.State
 import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.adapter.RepoListAdapter
-import dagger.hilt.android.AndroidEntryPoint
+import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>() {
 
-    private val viewModel by viewModels<RepositoriesListViewModel>()
+    private val viewModel by viewModel<RepositoriesListViewModel>()
     private val adapter by lazy {
         RepoListAdapter { item -> onItemClick(item) }
     }
@@ -98,7 +96,7 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
 
     private fun setRetryButton() {
         binding.retryButton.setOnClickListener {
-        //    viewModel.onRetryButtonClick()
+            viewModel.onRetryButtonClick()
         }
     }
 
@@ -118,7 +116,7 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
         dialog.setTitle(R.string.logout_title)
             .setMessage(R.string.logout_message)
             .setPositiveButton(R.string.yes) { _, _ ->
-               // viewModel.onLogoutButtonPressed()
+                viewModel.onLogoutButtonPressed()
                 navigateToAuth()
             }
             .setNegativeButton(R.string.no) { _, _ ->

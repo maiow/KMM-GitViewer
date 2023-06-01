@@ -2,8 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("plugin.serialization")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    //id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -51,10 +50,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0") //
+    implementation("com.squareup.okhttp3:okhttp:4.10.0") //
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0") //
 
     implementation("androidx.fragment:fragment-ktx:1.5.7")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
@@ -62,10 +61,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
 
-    implementation("com.google.dagger:hilt-android:2.46")
-    kapt("com.google.dagger:hilt-android-compiler:2.45")
+    implementation("io.insert-koin:koin-core:3.4.1")
+    implementation("io.insert-koin:koin-android:3.4.1")
 
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0") //
     implementation("org.jetbrains:markdown:0.4.1")
     implementation("com.github.bumptech.glide:glide:4.15.1")
 

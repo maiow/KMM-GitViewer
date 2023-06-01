@@ -1,9 +1,12 @@
 package com.mivanovskaya.gitviewer.shared.data
 
 import com.mivanovskaya.gitviewer.shared.KeyValueStorage
+import com.mivanovskaya.gitviewer.shared.data.dto.RepoDto
 import com.mivanovskaya.gitviewer.shared.data.dto.UserInfoDto
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
+import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
+import com.mivanovskaya.gitviewer.shared.domain.toListRepo
 import com.mivanovskaya.gitviewer.shared.domain.toUserInfo
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -22,6 +25,7 @@ import io.ktor.client.plugins.plugin
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.appendPathSegments
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
@@ -74,7 +78,20 @@ class AppRepositoryImpl : AppRepository {
         keyValueStorage.authToken = token
         updateBearerCredentials(token)
         val userInfoDto: UserInfoDto = client.get(USER_URL).body()
+        Napier.v("userInfoDto: $client")
         userInfoDto.toUserInfo()
+    }
+
+    override suspend fun getRepositories(): List<Repo> = withContext(ioDispatcher) {
+        val repos: List<RepoDto> = client.get(USERS_URL) {
+            url {
+                appendPathSegments(keyValueStorage.login ?: "", "repos")
+                parameters.append("per_page", REPOS_QUANTITY)
+                parameters.append("page", PAGES)
+            }
+        }.body()
+        Napier.v("repoDto: $client")
+        repos.toListRepo()
     }
 
     override fun getToken() = keyValueStorage.authToken
@@ -99,7 +116,8 @@ class AppRepositoryImpl : AppRepository {
 
     companion object {
         private const val USER_URL = "https://api.github.com/user"
-        private const val REPOS_QUANTITY = 10
-        private const val PAGES = 1
+        private const val USERS_URL = "https://api.github.com/users"
+        private const val REPOS_QUANTITY = "10"
+        private const val PAGES = "1"
     }
 }

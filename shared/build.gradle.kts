@@ -33,6 +33,7 @@ kotlin {
     val coroutinesVersion = "1.7.0"
     val ktorVersion = "2.3.0"
     val napierVersion = "2.6.1"
+    val koinVersion = "3.4.1"
 
     sourceSets {
         val commonMain by getting
@@ -45,6 +46,7 @@ kotlin {
             implementation("io.ktor:ktor-client-logging:$ktorVersion")
             implementation("io.github.aakira:napier:$napierVersion")
             implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+            api("io.insert-koin:koin-core:$koinVersion")
         }
 
         val commonTest by getting

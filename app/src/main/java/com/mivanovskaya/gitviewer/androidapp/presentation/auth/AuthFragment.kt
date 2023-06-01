@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,13 +18,12 @@ import com.mivanovskaya.gitviewer.androidapp.presentation.tools.hideKeyboard
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.setAppColor
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.setBackgroundAppColor
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.showAlertDialog
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class AuthFragment : BaseFragment<FragmentAuthBinding>() {
 
-    private val viewModel by viewModels<AuthViewModel>()
+    private val viewModel by viewModel<AuthViewModel>()
     override fun initBinding(inflater: LayoutInflater) = FragmentAuthBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
