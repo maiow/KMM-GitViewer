@@ -2,14 +2,14 @@ package com.mivanovskaya.gitviewer.androidapp.presentation.detail_info
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mivanovskaya.gitviewer.shared.data.MissingReadmeException
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import com.mivanovskaya.gitviewer.shared.domain.model.RepoDetails
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-//import retrofit2.HttpException
-import java.io.IOException
+import java.nio.channels.UnresolvedAddressException
 
 class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel() {
 
@@ -33,11 +33,10 @@ class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel
                 val repo = repository.getRepository(repoId)
                 _state.value = State.Loaded(repo, ReadmeState.Loading)
                 getReadme(repo, repoId)
-
-//            } catch (e: HttpException) {
-//                handleHttpException(e)
-            } catch (e: IOException) {
+            } catch (e: UnresolvedAddressException) {
                 handleNetworkException()
+            } catch (e: MissingReadmeException) {
+                handleMissingReadmeException()
             } catch (e: Exception) {
                 handleOtherException(e)
             }
@@ -55,22 +54,16 @@ class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel
         else _readmeState.value = ReadmeState.Loaded(readme)
     }
 
-//    private fun handleHttpException(e: HttpException) {
-//        if (_state.value is State.Loading) {
-//            _state.value = State.Error(e.message.toString())
-//            _readmeState.value = ReadmeState.Error(e.message.toString())
-//        } else {
-//            if (e.code() == 404) _readmeState.value = ReadmeState.Empty
-//            else _readmeState.value = ReadmeState.Error(e.message.toString())
-//        }
-//    }
-
     private fun handleNetworkException() {
         if (_state.value is State.Loaded) _readmeState.value = ReadmeState.Error(NO_INTERNET)
         else {
             _state.value = State.Error(NO_INTERNET)
             _readmeState.value = ReadmeState.Error(NO_INTERNET)
         }
+    }
+
+    private fun handleMissingReadmeException() {
+        _readmeState.value = ReadmeState.Empty
     }
 
     private fun handleOtherException(e: Exception) {
@@ -85,7 +78,6 @@ class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel
     sealed interface State {
         object Loading : State
         data class Error(val error: String) : State
-
         data class Loaded(
             val githubRepo: RepoDetails, val readmeState: ReadmeState
         ) : State

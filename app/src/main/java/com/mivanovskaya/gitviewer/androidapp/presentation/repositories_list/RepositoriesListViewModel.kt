@@ -8,7 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.io.IOException
+import java.nio.channels.UnresolvedAddressException
 
 class RepositoriesListViewModel(private val repository: AppRepository) : ViewModel() {
 
@@ -33,10 +33,10 @@ class RepositoriesListViewModel(private val repository: AppRepository) : ViewMod
                     _state.value = State.Empty
                 else
                     _state.value = State.Loaded(repos)
-                //TODO: поймать и обработать ошибки сети из Ktor
-            } catch (e: IOException) {
+            } catch (e: UnresolvedAddressException) {
                 handleNetworkException()
             } catch (e: Exception) {
+                //TODO: проверить текст
                 _state.value = State.Error(e.message.toString())
             }
             job.cancel()

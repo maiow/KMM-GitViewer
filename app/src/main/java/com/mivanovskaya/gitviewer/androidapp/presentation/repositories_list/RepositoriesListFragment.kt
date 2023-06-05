@@ -60,14 +60,14 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
             commonConnectError.connectionError.isVisible =
                 ((state is State.Error) && (state.error == NO_INTERNET))
 
-            if ((state is State.Error) && (state.error != NO_INTERNET)) {
-                commonOtherError.somethingError.isVisible = true
-                commonOtherError.errorDescription.text =
-                    if (state.error != "null") getString(
-                        R.string.error_with_description, state.error
-                    )
-                    else getString(R.string.error)
-            }
+            commonOtherError.somethingError.isVisible =
+                ((state is State.Error) && (state.error != NO_INTERNET))
+
+            commonOtherError.errorDescription.text =
+                if (state is State.Error && state.error != "null") getString(
+                    R.string.error_with_description, state.error
+                )
+                else getString(R.string.error)
 
             recycler.isVisible = (state is State.Loaded)
             retryButton.isVisible = (state is State.Error) || (state is State.Empty)

@@ -15,6 +15,8 @@ import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -27,6 +29,7 @@ import io.ktor.client.plugins.plugin
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.appendPathSegments
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
@@ -45,9 +48,6 @@ class AppRepositoryImpl(
                 loadTokens {
                     BearerTokens(keyValueStorage.authToken ?: "", "")
                 }
-                sendWithoutRequest { request ->
-                    request.url.host == "https://api.github.com/"
-                }
             }
         }
         headers {
@@ -60,10 +60,22 @@ class AppRepositoryImpl(
                 ignoreUnknownKeys = true
             })
         }
+        expectSuccess = true
+        HttpResponseValidator {
+            handleResponseExceptionWithRequest { exception, _ ->
+                val clientException = exception as? ClientRequestException
+                    ?: return@handleResponseExceptionWithRequest
+                val exceptionResponse = clientException.response
+                if (exceptionResponse.status == HttpStatusCode.NotFound) {
+                    Napier.v(exceptionResponse.toString())
+                    throw MissingReadmeException(exceptionResponse.status.toString())
+                }
+            }
+        }
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Napier.v("HTTP Client", null, message)
+                    Napier.v(" Napier HTTP Client", null, message)
                 }
             }
             level = LogLevel.HEADERS
@@ -105,13 +117,13 @@ class AppRepositoryImpl(
 
     override suspend fun getRepositoryReadme(
         ownerName: String, repositoryName: String, branchName: String
-    ): String {
-        val readme: String = client.get(USER_CONTENT_URL) {
+    ): String = withContext(ioDispatcher) {
+        val response = client.get(USER_CONTENT_URL) {
             url {
                 appendPathSegments(ownerName, repositoryName, branchName, "README.md")
             }
-        }.body()
-        return readme
+        }
+        response.body()
     }
 
     override fun getToken() = keyValueStorage.authToken

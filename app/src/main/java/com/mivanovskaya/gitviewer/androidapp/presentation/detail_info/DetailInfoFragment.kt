@@ -81,13 +81,17 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
             commonProgress.progressBar.isVisible = (state == State.Loading)
             commonError.connectionError.isVisible =
                 ((state is State.Error) && (state.error == NO_INTERNET))
-            retryButton.isVisible = commonError.connectionError.isVisible
+            retryButton.isVisible = (state is State.Error)
 
-            if ((state is State.Error) && (state.error != NO_INTERNET)) {
-                error.somethingError.isVisible = true
-                error.errorDescription.text =
-                    getString(R.string.error_with_description, state.error)
-            }
+            error.somethingError.isVisible =
+                ((state is State.Error) && (state.error != NO_INTERNET))
+
+            error.errorDescription.text =
+                if (state is State.Error && state.error != "null") getString(
+                    R.string.error_with_description,
+                    state.error
+                )
+                else getString(R.string.error)
 
             if (state is State.Loaded) {
                 setRepoInfoVisible(true)
@@ -122,8 +126,9 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
 
             if ((state is ReadmeState.Error) && (state.error != NO_INTERNET)) {
                 error.somethingError.isVisible = true
-                error.errorDescription.text = (if (state.error != "null") state.error
-                else getString(R.string.error)) //TODO: проверить текст
+                error.errorDescription.text = if (state.error != "null")
+                    getString(R.string.error_with_description, state.error)
+                else getString(R.string.error)
             }
             retryButton.isVisible = (state is ReadmeState.Error)
 
@@ -162,6 +167,7 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
 
     private fun setRetryButton() {
         binding.retryButton.setOnClickListener {
+            binding.readmeError.connectionError.isVisible = false
             viewModel.onRetryButtonClick(args.repoId)
         }
     }
