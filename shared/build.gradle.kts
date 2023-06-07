@@ -5,14 +5,7 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-//@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-//   targetHierarchy.default()
-//
-//    android()
-//    ios()
-//    iosSimulatorArm64()
-
     android {
         compilations.all {
             kotlinOptions {
