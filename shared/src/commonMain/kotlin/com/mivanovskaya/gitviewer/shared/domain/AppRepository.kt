@@ -23,6 +23,7 @@ interface AppRepository {
 
     @Throws(Exception::class)
     suspend fun signIn(token: String): UserInfo
+
     fun getToken(): String?
     fun resetToken()
     fun saveLogin(login: String)

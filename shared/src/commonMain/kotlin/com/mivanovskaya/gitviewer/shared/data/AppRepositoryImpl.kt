@@ -10,7 +10,7 @@ import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
 import com.mivanovskaya.gitviewer.shared.domain.toListRepo
 import com.mivanovskaya.gitviewer.shared.domain.toRepoDetails
 import com.mivanovskaya.gitviewer.shared.domain.toUserInfo
-import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Antilog
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -39,7 +39,8 @@ import kotlinx.serialization.json.Json
 
 class AppRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher,
-    private val keyValueStorage: KeyValueStorage
+    private val keyValueStorage: KeyValueStorage,
+    private val antilog: Antilog
 ) : AppRepository {
 
     private val client = HttpClient(CIO) {
@@ -80,7 +81,7 @@ class AppRepositoryImpl(
             }
             level = LogLevel.HEADERS
         }
-    }.also { Napier.base(DebugAntilog()) }
+    }.also { Napier.base(antilog) }
 
     private fun updateBearerCredentials(newToken: String) {
         client.plugin(Auth).bearer {
@@ -142,9 +143,6 @@ class AppRepositoryImpl(
         client.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>().firstOrNull()
             ?.clearToken()
     }
-
-    //TODO: close client on app exit
-    //client.close()
 
     companion object {
         private const val USER_URL = "https://api.github.com/user"

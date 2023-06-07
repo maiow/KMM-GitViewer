@@ -3,8 +3,8 @@ package com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.ada
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.androidapp.databinding.RepositoriesViewHolderBinding
+import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 
 class RepoListAdapter(
     private val onItemClick: (Repo) -> Unit

@@ -36,7 +36,6 @@ class RepositoriesListViewModel(private val repository: AppRepository) : ViewMod
             } catch (e: UnresolvedAddressException) {
                 handleNetworkException()
             } catch (e: Exception) {
-                //TODO: проверить текст
                 _state.value = State.Error(e.message.toString())
             }
             job.cancel()
