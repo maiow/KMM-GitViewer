@@ -1,6 +1,5 @@
 package com.mivanovskaya.gitviewer.shared.data
 
-import com.mivanovskaya.gitviewer.shared.KeyValueStorage
 import com.mivanovskaya.gitviewer.shared.data.dto.RepoDto
 import com.mivanovskaya.gitviewer.shared.data.dto.UserInfoDto
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository

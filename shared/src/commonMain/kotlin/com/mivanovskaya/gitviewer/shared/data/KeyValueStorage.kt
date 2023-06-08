@@ -1,5 +1,6 @@
-package com.mivanovskaya.gitviewer.shared
+package com.mivanovskaya.gitviewer.shared.data
 
+import com.mivanovskaya.gitviewer.shared.getSettings
 import com.russhwolf.settings.Settings
 
 object KeyValueStorage {
