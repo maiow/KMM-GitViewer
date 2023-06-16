@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AppRepository) : ViewModel() {
 
-    private val token: MutableStateFlow<String?> = MutableStateFlow(null)
+    private var token: String? = null
 
     private val _state = MutableStateFlow<State>(State.Idle)
     val state = _state.asStateFlow()
@@ -25,8 +25,8 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
     val actions: Flow<Action> = _actions.receiveAsFlow()
 
     init {
-        token.value = repository.getToken()
-        if (!token.value.isNullOrBlank()) {
+        token = repository.getToken()
+        if (!token.isNullOrBlank()) {
             viewModelScope.launch {
                 _actions.send(Action.RouteToMain)
             }
@@ -49,7 +49,9 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
                 _state.value = State.Idle
                 _actions.send(Action.RouteToMain)
             }
-        } else _state.value = State.InvalidInput(StringResource(R.string.invalid_token))
+        } else {
+            _state.value = State.InvalidInput(StringResource(R.string.invalid_token))
+        }
     }
 
     private fun isValid(token: String): Boolean =

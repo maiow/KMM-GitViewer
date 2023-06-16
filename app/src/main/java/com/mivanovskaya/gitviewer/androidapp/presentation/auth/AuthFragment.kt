@@ -1,11 +1,9 @@
 package com.mivanovskaya.gitviewer.androidapp.presentation.auth
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.databinding.FragmentAuthBinding
 import com.mivanovskaya.gitviewer.androidapp.presentation.base.BaseFragment
+import com.mivanovskaya.gitviewer.androidapp.presentation.tools.colorStateList
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.hideKeyboard
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.setAppColor
-import com.mivanovskaya.gitviewer.androidapp.presentation.tools.setBackgroundAppColor
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.showAlertDialog
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AuthFragment : BaseFragment<FragmentAuthBinding>() {
 
     private val viewModel by viewModel<AuthViewModel>()
+
     override fun initBinding(inflater: LayoutInflater) = FragmentAuthBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,13 +53,13 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
         }
     }
 
-    private fun handleAction(it: AuthViewModel.Action) {
-        when (it) {
+    private fun handleAction(action: AuthViewModel.Action) {
+        when (action) {
             AuthViewModel.Action.RouteToMain -> routeToMain()
 
             is AuthViewModel.Action.ShowError -> {
                 requireContext().hideKeyboard(requireView())
-                showAlertDialog(it.message, requireContext())
+                showAlertDialog(action.message, requireContext())
             }
         }
     }
@@ -74,8 +73,8 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
             progressBar.isVisible = state == AuthViewModel.State.Loading
             setInvalidTokenErrorSign(state)
             setSignButtonTextColor(state)
-            setEditTextHintColor(requireContext(), state)
-            editTextHint.isVisible = !(state == AuthViewModel.State.Idle && !editText.isFocused)
+            setEditTextHintColor(state)
+            editTextHint.isVisible = state != AuthViewModel.State.Idle || editText.isFocused
             setEditTextUnderlineColor(state)
         }
     }
@@ -108,44 +107,36 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
     private fun updateUiOnEditTextClickOrFocus() {
         with(binding) {
             editTextHint.isVisible = true
-            editTextHint.setTextColor(setAppColor(requireContext(), R.color.secondary))
+            editTextHint.setTextColor(requireContext().setAppColor(R.color.secondary))
             editText.backgroundTintList = ColorStateList.valueOf(
-                setAppColor(
-                    requireContext(),
-                    R.color.secondary
-                )
+                requireContext().setAppColor(R.color.secondary)
             )
             invalidTokenError.isVisible = false
         }
     }
 
     private fun setSignButtonTextColor(state: AuthViewModel.State) {
-        if (state == AuthViewModel.State.Loading)
-            binding.signButton.setTextColor(setAppColor(requireContext(), R.color.accent))
-        else binding.signButton.setTextColor(setAppColor(requireContext(), R.color.white))
+        val color = if (state == AuthViewModel.State.Loading) R.color.accent else R.color.white
+        binding.signButton.setTextColor(requireContext().setAppColor(color))
     }
 
-    private fun setEditTextHintColor(context: Context, state: AuthViewModel.State) {
-        binding.editTextHint.setTextColor(
-            ContextCompat.getColor(
-                context,
-                when (state) {
-                    is AuthViewModel.State.InvalidInput -> R.color.error
-                    else -> R.color.white_50_opacity
-                }
-            )
-        )
+    private fun setEditTextHintColor(state: AuthViewModel.State) {
+        val color = when (state) {
+            is AuthViewModel.State.InvalidInput -> R.color.error
+            else -> R.color.white_50_opacity
+        }
+        binding.editTextHint.setTextColor(requireContext().setAppColor(color))
+
     }
 
     private fun setEditTextUnderlineColor(state: AuthViewModel.State) {
         binding.editText.backgroundTintList =
             when (state) {
-                is AuthViewModel.State.InvalidInput -> setBackgroundAppColor(
-                    requireContext(),
+                is AuthViewModel.State.InvalidInput -> requireContext().colorStateList(
                     R.color.error
                 )
 
-                else -> setBackgroundAppColor(requireContext(), R.color.grey)
+                else -> requireContext().colorStateList(R.color.grey)
             }
     }
 }

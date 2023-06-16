@@ -12,7 +12,7 @@ class RepoListAdapter(
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         getItem(position)?.let { item ->
-            holder.bind(item) { Repo -> onItemClick(Repo) }
+            holder.bind(item) { repo -> onItemClick(repo) }
         }
     }
 

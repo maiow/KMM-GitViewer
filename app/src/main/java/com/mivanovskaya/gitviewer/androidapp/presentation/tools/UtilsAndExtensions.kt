@@ -14,16 +14,18 @@ fun Context.hideKeyboard(view: View) {
     }
 }
 
-fun setAppColor(context: Context, color: Int) = ContextCompat.getColor(context, color)
+fun Context.setAppColor(color: Int) = ContextCompat.getColor(this, color)
 
-fun setBackgroundAppColor(context: Context, color: Int) =
-    ColorStateList.valueOf(ContextCompat.getColor(context, color))
+fun Context.colorStateList(color: Int) =
+    ColorStateList.valueOf(ContextCompat.getColor(this, color))
 
 fun showAlertDialog(message: String, context: Context) {
     val dialog =
         MaterialAlertDialogBuilder(context, R.style.MyThemeOverlay_Material_MaterialAlertDialog)
-            .setCancelable(true).setTitle(context.getString(R.string.error))
+            .setCancelable(true)
+            .setTitle(context.getString(R.string.error))
             .setMessage(context.getString(R.string.error_description, message))
-            .setPositiveButton(context.getString(R.string.ok)) { _, _ -> }.create()
+            .setPositiveButton(context.getString(R.string.ok)) { _, _ -> }
+            .create()
     dialog.show()
 }

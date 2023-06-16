@@ -26,6 +26,7 @@ class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel
     fun onRetryButtonClick(repoId: String) = getRepoInfo(repoId)
 
     private fun getRepoInfo(repoId: String) {
+        /** при нажатии кнопки Retry запускается еще одна корутина, job для отмены предыдущей */
         val job = Job()
         viewModelScope.launch(job) {
             try {
@@ -50,13 +51,14 @@ class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel
             repositoryName = repoId,
             branchName = repo.defaultBranch
         )
-        if (readme.isBlank()) _readmeState.value = ReadmeState.Empty
-        else _readmeState.value = ReadmeState.Loaded(readme)
+        _readmeState.value = if (readme.isBlank()) ReadmeState.Empty
+        else ReadmeState.Loaded(readme)
     }
 
     private fun handleNetworkException() {
-        if (_state.value is State.Loaded) _readmeState.value = ReadmeState.Error(NO_INTERNET)
-        else {
+        if (_state.value is State.Loaded) {
+            _readmeState.value = ReadmeState.Error(NO_INTERNET)
+        } else {
             _state.value = State.Error(NO_INTERNET)
             _readmeState.value = ReadmeState.Error(NO_INTERNET)
         }
@@ -67,9 +69,9 @@ class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel
     }
 
     private fun handleOtherException(e: Exception) {
-        if (_state.value is State.Loaded) _readmeState.value =
-            ReadmeState.Error(e.message.toString())
-        else {
+        if (_state.value is State.Loaded) {
+            _readmeState.value = ReadmeState.Error(e.message.toString())
+        } else {
             _state.value = State.Error(e.message.toString())
             _readmeState.value = ReadmeState.Error(e.message.toString())
         }
@@ -79,7 +81,8 @@ class RepositoryInfoViewModel(private val repository: AppRepository) : ViewModel
         object Loading : State
         data class Error(val error: String) : State
         data class Loaded(
-            val githubRepo: RepoDetails, val readmeState: ReadmeState
+            val githubRepo: RepoDetails,
+            val readmeState: ReadmeState
         ) : State
     }
 

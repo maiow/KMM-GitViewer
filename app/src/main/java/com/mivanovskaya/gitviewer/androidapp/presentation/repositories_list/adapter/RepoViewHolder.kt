@@ -17,27 +17,16 @@ class RepoViewHolder(private val binding: RepositoriesViewHolderBinding) :
             title.text = item.name
             description.text = item.description
             language.text = item.language
-            when (item.language) {
-                JAVA -> language.setTextColor(
-                    ContextCompat.getColor(repoCard.context, R.color.yellow)
-                )
-
-                KOTLIN -> language.setTextColor(
-                    ContextCompat.getColor(repoCard.context, R.color.lilac)
-                )
-
-                PYTHON -> language.setTextColor(
-                    ContextCompat.getColor(repoCard.context, R.color.accent)
-                )
-
-                JAVA_SCRIPT -> language.setTextColor(
-                    ContextCompat.getColor(repoCard.context, R.color.secondary)
-                )
-
-                else -> language.setTextColor(
-                    ContextCompat.getColor(repoCard.context, R.color.white_50_opacity)
-                )
+            val color = when (item.language) {
+                JAVA -> R.color.yellow
+                KOTLIN -> R.color.lilac
+                PYTHON -> R.color.accent
+                JAVA_SCRIPT -> R.color.secondary
+                else -> R.color.white_50_opacity
             }
+            language.setTextColor(
+                ContextCompat.getColor(repoCard.context, color)
+            )
         }
     }
 

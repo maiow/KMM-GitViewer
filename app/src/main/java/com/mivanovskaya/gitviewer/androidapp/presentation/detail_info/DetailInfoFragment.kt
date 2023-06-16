@@ -30,6 +30,7 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
 
     private val viewModel by viewModel<RepositoryInfoViewModel>()
     private val args by navArgs<DetailInfoFragmentArgs>()
+
     override fun initBinding(inflater: LayoutInflater) = FragmentDetailInfoBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,11 +81,11 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
         with(binding) {
             commonProgress.progressBar.isVisible = (state == State.Loading)
             commonError.connectionError.isVisible =
-                ((state is State.Error) && (state.error == NO_INTERNET))
+                (state is State.Error) && (state.error == NO_INTERNET)
             retryButton.isVisible = (state is State.Error)
 
             error.somethingError.isVisible =
-                ((state is State.Error) && (state.error != NO_INTERNET))
+                (state is State.Error) && (state.error != NO_INTERNET)
 
             error.errorDescription.text =
                 if (state is State.Error && state.error != "null") getString(
@@ -122,7 +123,7 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
             readme.isVisible = (state is ReadmeState.Loaded) || (state is ReadmeState.Empty)
 
             readmeError.connectionError.isVisible =
-                ((state is ReadmeState.Error) && (state.error == NO_INTERNET))
+                (state is ReadmeState.Error) && (state.error == NO_INTERNET)
 
             if ((state is ReadmeState.Error) && (state.error != NO_INTERNET)) {
                 error.somethingError.isVisible = true
@@ -130,7 +131,7 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
                     getString(R.string.error_with_description, state.error)
                 else getString(R.string.error)
             }
-            retryButton.isVisible = (state is ReadmeState.Error)
+            retryButton.isVisible = state is ReadmeState.Error
 
             readme.text = when (state) {
                 is ReadmeState.Loaded -> parseReadmeMarkdown(state.markdown, readme)
@@ -149,19 +150,19 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
         )
     }
 
-    private fun setRepoInfoVisible(set: Boolean) {
+    private fun setRepoInfoVisible(visible: Boolean) {
         with(binding) {
-            license.isVisible = set
-            stars.isVisible = set
-            forks.isVisible = set
-            watchers.isVisible = set
-            link.isVisible = set
-            licenseTitle.isVisible = set
-            iconLicense.isVisible = set
-            iconStar.isVisible = set
-            iconFork.isVisible = set
-            iconWatcher.isVisible = set
-            iconLink.isVisible = set
+            license.isVisible = visible
+            stars.isVisible = visible
+            forks.isVisible = visible
+            watchers.isVisible = visible
+            link.isVisible = visible
+            licenseTitle.isVisible = visible
+            iconLicense.isVisible = visible
+            iconStar.isVisible = visible
+            iconFork.isVisible = visible
+            iconWatcher.isVisible = visible
+            iconLink.isVisible = visible
         }
     }
 
