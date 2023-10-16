@@ -19,21 +19,25 @@
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginTop">32dp</item>
         <item name="android:layout_height">36dp</item>
         <item name="cornerRadius">8dp</item>
-        <item name="layout_constraintWidth_max">328dp</item>
+        <item name="layout_constraintWidth_max">320dp</item>
     </style>
 
-    <style name="MyEditText" parent="Widget.AppCompat.EditText">
-        <item name="colorControlNormal">@color/grey</item>
-        <item name="colorControlActivated">@color/secondary</item>
-        <item name="android:textColorHint">@color/edit_text_hint_selector</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">8dp</item>
+    <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/edit_text_hint_selector</item>
+        <item name="hintTextColor">@color/edit_text_hint_selector</item>
+        <item name="errorEnabled">true</item>
+        <item name="helperTextEnabled">true</item>
+        <item name="endIconMode">clear_text</item>
         <item name="android:textSize">16sp</item>
         <item name="android:inputType">textNoSuggestions</item>
+        <item name="materialThemeOverlay">@style/MyThemeOverlay.Material.TextInputLayout</item>
+    </style>
+
+    <style name="MyThemeOverlay.Material.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="colorPrimary">?attr/colorSecondary</item>
     </style>
 
     <style name="MyThemeOverlay.Material.MaterialAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">

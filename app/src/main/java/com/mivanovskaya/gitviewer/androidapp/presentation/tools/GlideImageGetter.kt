@@ -24,9 +24,7 @@ class GlideImageGetter(private val textView: TextView) : ImageGetter {
     ), Target<Bitmap> {
         private var drawable: Drawable? = null
         override fun draw(canvas: Canvas) {
-            if (drawable != null) {
-                drawable!!.draw(canvas)
-            }
+            drawable?.draw(canvas)
         }
 
         private fun setDrawable(drawable: Drawable?) {

@@ -12,14 +12,7 @@ const val SHARED_PREF_NAME = "shared_name"
 
 actual fun getSettings(): Settings {
 
-    return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-        SharedPreferencesSettings(
-            appContext!!.getSharedPreferences(
-                SHARED_PREF_NAME,
-                Context.MODE_PRIVATE
-            )
-        )
-    } else {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val masterKey = MasterKey.Builder(appContext!!)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
@@ -31,7 +24,12 @@ actual fun getSettings(): Settings {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
-        return SharedPreferencesSettings(delegate)
+        SharedPreferencesSettings(delegate)
+
+    } else {
+        SharedPreferencesSettings(
+            appContext!!.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        )
     }
 }
 

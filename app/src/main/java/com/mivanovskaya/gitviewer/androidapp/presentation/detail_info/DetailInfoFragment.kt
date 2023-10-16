@@ -1,103 +1,97 @@
 package com.mivanovskaya.gitviewer.androidapp.presentation.detail_info
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.databinding.FragmentDetailInfoBinding
 import com.mivanovskaya.gitviewer.androidapp.presentation.base.BaseFragment
-import com.mivanovskaya.gitviewer.androidapp.presentation.detail_info.RepositoryInfoViewModel.Companion.NO_INTERNET
 import com.mivanovskaya.gitviewer.androidapp.presentation.detail_info.RepositoryInfoViewModel.ReadmeState
 import com.mivanovskaya.gitviewer.androidapp.presentation.detail_info.RepositoryInfoViewModel.State
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.GlideImageGetter
-import kotlinx.coroutines.launch
+import com.mivanovskaya.gitviewer.androidapp.presentation.tools.collectInStartedState
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
 
-    private val viewModel by viewModel<RepositoryInfoViewModel>()
-    private val args by navArgs<DetailInfoFragmentArgs>()
+    private val args: DetailInfoFragmentArgs by navArgs()
+    private val viewModel: RepositoryInfoViewModel by viewModel { parametersOf(args.repoName) }
 
     override fun initBinding(inflater: LayoutInflater) = FragmentDetailInfoBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onGettingArgument()
         setToolbarTitle()
         observeDetailInfoState()
-        observeReadmeState()
-        setAppBarBackArrowClick()
         setRetryButton()
         setLogoutButton()
     }
 
-    private fun onGettingArgument() = viewModel.onGettingArgument(args.repoId)
-
     private fun setToolbarTitle() {
-        binding.repositoriesBar.title = args.repoId
-    }
-
-    private fun setAppBarBackArrowClick() {
-        binding.repositoriesBar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+        requireActivity().findViewById<Toolbar>(R.id.toolbar).title = args.repoName
     }
 
     private fun observeDetailInfoState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    updateUiOnDetailInfo(state)
-                }
-            }
-        }
-    }
-
-    private fun observeReadmeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.readmeState.collect { state ->
-                    updateUiOnReadme(state)
-                }
-            }
-        }
+        viewLifecycleOwner.collectInStartedState(viewModel.state, ::updateUiOnDetailInfo)
     }
 
     private fun updateUiOnDetailInfo(state: State) {
         with(binding) {
             commonProgress.progressBar.isVisible = (state == State.Loading)
             commonError.connectionError.isVisible =
-                (state is State.Error) && (state.error == NO_INTERNET)
-            retryButton.isVisible = (state is State.Error)
+                (state is State.Error && state.isNetworkError ||
+                        state is State.Loaded && state.readmeState is ReadmeState.Error
+                        && state.readmeState.isNetworkError)
 
             error.somethingError.isVisible =
-                (state is State.Error) && (state.error != NO_INTERNET)
+                (state is State.Error && !state.isNetworkError ||
+                        state is State.Loaded && state.readmeState is ReadmeState.Error
+                        && !state.readmeState.isNetworkError)
 
-            error.errorDescription.text =
-                if (state is State.Error && state.error != "null") getString(
-                    R.string.error_with_description,
-                    state.error
-                )
-                else getString(R.string.error)
+            val errorText =
+                if (state is State.Error && !state.isNetworkError ||
+                    state is State.Loaded && state.readmeState is ReadmeState.Error
+                            && !state.readmeState.isNetworkError)
+                    getString(R.string.error)
+                else null
 
-            if (state is State.Loaded) {
-                setRepoInfoVisible(true)
-                showRepoInfo(state)
-            } else setRepoInfoVisible(false)
+            error.errorDescription.text = errorText
+
+            retryButton.isVisible =
+                commonError.connectionError.isVisible || error.somethingError.isVisible
+
+
+            repoInfoGroup.isVisible = state is State.Loaded
+            if (state is State.Loaded) showRepoInfo(state)
+
+            readmeProgress.isVisible =
+                state is State.Loaded && state.readmeState is ReadmeState.Loading
+            readme.isVisible =
+                state is State.Loaded && state.readmeState is ReadmeState.Loaded ||
+                        state is State.Loaded && state.readmeState is ReadmeState.Empty
+
+            val readmeText = if (state is State.Loaded && state.readmeState is ReadmeState.Loaded) {
+                parseReadmeMarkdown(state.readmeState.markdown, readme)
+            } else if (state is State.Loaded && state.readmeState is ReadmeState.Empty) {
+                getString(R.string.no_readme)
+            } else null
+
+            readme.text = readmeText
         }
     }
 
@@ -105,39 +99,29 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
         with(binding) {
             license.text = state.githubRepo.license?.name ?: getString(R.string.no_license)
             stars.text = resources.getQuantityString(
-                R.plurals.stars, state.githubRepo.stargazersCount, state.githubRepo.stargazersCount
+                R.plurals.stars,
+                state.githubRepo.stargazersCount,
+                state.githubRepo.stargazersCount
             )
             forks.text = resources.getQuantityString(
-                R.plurals.forks, state.githubRepo.forksCount, state.githubRepo.forksCount
+                R.plurals.forks,
+                state.githubRepo.forksCount,
+                state.githubRepo.forksCount
             )
             watchers.text = resources.getQuantityString(
-                R.plurals.watchers, state.githubRepo.watchersCount, state.githubRepo.watchersCount
+                R.plurals.watchers,
+                state.githubRepo.watchersCount,
+                state.githubRepo.watchersCount
             )
             link.text = state.githubRepo.htmlUrl
+            setClickListenerForLink(state.githubRepo.htmlUrl)
         }
     }
 
-    private fun updateUiOnReadme(state: ReadmeState) {
-        with(binding) {
-            readmeProgress.isVisible = state is ReadmeState.Loading
-            readme.isVisible = (state is ReadmeState.Loaded) || (state is ReadmeState.Empty)
-
-            readmeError.connectionError.isVisible =
-                (state is ReadmeState.Error) && (state.error == NO_INTERNET)
-
-            if ((state is ReadmeState.Error) && (state.error != NO_INTERNET)) {
-                error.somethingError.isVisible = true
-                error.errorDescription.text = if (state.error != "null")
-                    getString(R.string.error_with_description, state.error)
-                else getString(R.string.error)
-            }
-            retryButton.isVisible = state is ReadmeState.Error
-
-            readme.text = when (state) {
-                is ReadmeState.Loaded -> parseReadmeMarkdown(state.markdown, readme)
-                is ReadmeState.Empty -> getString(R.string.no_readme)
-                else -> null
-            }
+    private fun setClickListenerForLink(url: String) {
+        binding.link.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
         }
     }
 
@@ -150,31 +134,14 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
         )
     }
 
-    private fun setRepoInfoVisible(visible: Boolean) {
-        with(binding) {
-            license.isVisible = visible
-            stars.isVisible = visible
-            forks.isVisible = visible
-            watchers.isVisible = visible
-            link.isVisible = visible
-            licenseTitle.isVisible = visible
-            iconLicense.isVisible = visible
-            iconStar.isVisible = visible
-            iconFork.isVisible = visible
-            iconWatcher.isVisible = visible
-            iconLink.isVisible = visible
-        }
-    }
-
     private fun setRetryButton() {
         binding.retryButton.setOnClickListener {
-            binding.readmeError.connectionError.isVisible = false
-            viewModel.onRetryButtonClick(args.repoId)
+            viewModel.onRetryButtonClick()
         }
     }
 
     private fun setLogoutButton() {
-        val button = binding.repositoriesBar.menu.getItem(0)
+        val button = requireActivity().findViewById<Toolbar>(R.id.toolbar).menu.getItem(0)
         button.setOnMenuItemClickListener {
             setLogoutAlertDialog()
             true
@@ -183,14 +150,17 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
 
     private fun setLogoutAlertDialog() {
         val dialog = MaterialAlertDialogBuilder(
-            requireContext(), R.style.MyThemeOverlay_Material_MaterialAlertDialog
+            requireContext(),
+            R.style.MyThemeOverlay_Material_MaterialAlertDialog
         )
-        dialog.setTitle(R.string.logout_title).setMessage(R.string.logout_message)
+        dialog.setTitle(R.string.logout_title)
+            .setMessage(R.string.logout_message)
             .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.onLogoutButtonPressed()
                 navigateToAuth()
-            }.setNegativeButton(R.string.no) { _, _ ->
-                dialog.create().hide()
+            }
+            .setNegativeButton(R.string.no) { currentDialog, _ ->
+                currentDialog.cancel()
             }
         dialog.create().show()
     }

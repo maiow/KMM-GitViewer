@@ -19,14 +19,15 @@
     <fragment
         android:id="@+id/repositoriesListFragment"
         android:name="com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.RepositoriesListFragment"
-        android:label="fragment_repositories_list"
+        android:label="@string/repositories"
         tools:layout="@layout/fragment_repositories_list">
         <action
             android:id="@+id/action_repositoriesListFragment_to_detailInfoFragment"
             app:destination="@id/detailInfoFragment" />
         <action
             android:id="@+id/action_repositoriesListFragment_to_authFragment"
-            app:destination="@id/authFragment" />
+            app:destination="@id/authFragment"
+            app:popUpTo="@+id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/detailInfoFragment"
@@ -34,10 +35,11 @@
         android:label="fragment_detail_info"
         tools:layout="@layout/fragment_detail_info">
         <argument
-            android:name="repoId"
+            android:name="repoName"
             app:argType="string" />
         <action
             android:id="@+id/action_detailInfoFragment_to_authFragment"
-            app:destination="@id/authFragment" />
+            app:destination="@id/authFragment"
+            app:popUpTo="@+id/nav_graph" />
     </fragment>
 </navigation>

@@ -6,7 +6,7 @@ import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.shared.domain.model.RepoDetails
 import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
-import com.mivanovskaya.gitviewer.shared.domain.toListRepo
+import com.mivanovskaya.gitviewer.shared.domain.toRepo
 import com.mivanovskaya.gitviewer.shared.domain.toRepoDetails
 import com.mivanovskaya.gitviewer.shared.domain.toUserInfo
 import io.github.aakira.napier.Antilog
@@ -15,7 +15,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -45,8 +44,10 @@ class AppRepositoryImpl(
     private val client = HttpClient(CIO) {
         install(Auth) {
             bearer {
-                loadTokens {
-                    BearerTokens(keyValueStorage.authToken ?: "", "")
+                if (keyValueStorage.authToken != null) {
+                    loadTokens {
+                        BearerTokens(keyValueStorage.authToken!!, "")
+                    }
                 }
             }
         }
@@ -61,17 +62,6 @@ class AppRepositoryImpl(
             })
         }
         expectSuccess = true
-        HttpResponseValidator {
-            handleResponseExceptionWithRequest { exception, _ ->
-                val clientException = exception as? ClientRequestException
-                    ?: return@handleResponseExceptionWithRequest
-                val exceptionResponse = clientException.response
-                if (exceptionResponse.status == HttpStatusCode.NotFound) {
-                    Napier.v(exceptionResponse.toString())
-                    throw MissingReadmeException(exceptionResponse.status.toString())
-                }
-            }
-        }
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
@@ -82,34 +72,44 @@ class AppRepositoryImpl(
         }
     }.also { Napier.base(antilog) }
 
-    private fun updateBearerCredentials(newToken: String) {
+    private fun updateBearerToken(newToken: String) {
         client.plugin(Auth).bearer {
             loadTokens { BearerTokens(newToken, "") }
         }
     }
 
     override suspend fun signIn(token: String): UserInfo = withContext(ioDispatcher) {
-        keyValueStorage.authToken = token
-        updateBearerCredentials(token)
+        updateBearerToken(token)
         val userInfoDto: UserInfoDto = client.get(USER_URL).body()
         userInfoDto.toUserInfo()
     }
 
-    override suspend fun getRepositories(): List<Repo> = withContext(ioDispatcher) {
-        val repos: List<RepoDto> = client.get(USERS_URL) {
-            url {
-                appendPathSegments(keyValueStorage.login ?: "", "repos")
-                parameters.append("per_page", REPOS_QUANTITY)
-                parameters.append("page", PAGES)
-            }
-        }.body()
-        repos.toListRepo()
-    }
+    override suspend fun getRepositories(limit: Int, page: Int): List<Repo> =
+        withContext(ioDispatcher) {
+            val repos: List<RepoDto> = client.get(USERS_URL) {
+                url {
+                    appendPathSegments(
+                        requireNotNull(keyValueStorage.login) {
+                            "Error: authorized username not found in storage"
+                        },
+                        "repos"
+                    )
+                    parameters.append("per_page", limit.toString())
+                    parameters.append("page", page.toString())
+                }
+            }.body()
+            repos.map { it.toRepo() }
+        }
 
-    override suspend fun getRepository(repoId: String): RepoDetails = withContext(ioDispatcher) {
+    override suspend fun getRepository(repoName: String): RepoDetails = withContext(ioDispatcher) {
         val repo: RepoDto = client.get(REPOS_URL) {
             url {
-                appendPathSegments(keyValueStorage.login ?: "", repoId)
+                appendPathSegments(
+                    requireNotNull(keyValueStorage.login) {
+                        "Error: authorized username not found in storage"
+                    },
+                    repoName
+                )
             }
         }.body()
         repo.toRepoDetails()
@@ -117,13 +117,29 @@ class AppRepositoryImpl(
 
     override suspend fun getRepositoryReadme(
         ownerName: String, repositoryName: String, branchName: String
-    ): String = withContext(ioDispatcher) {
-        val response = client.get(USER_CONTENT_URL) {
-            url {
-                appendPathSegments(ownerName, repositoryName, branchName, "README.md")
+    ): String? = withContext(ioDispatcher) {
+        try {
+            val response = client.get(USER_CONTENT_URL) {
+                url {
+                    appendPathSegments(ownerName, repositoryName, branchName, "README.md")
+                }
             }
+            response.body()
+        } catch (e: ClientRequestException) {
+            if (e.response.status == HttpStatusCode.NotFound) null
+            else throw e
+
+            // было так, как закомментировано ниже,
+            // но из-за унификации обработки ошибок в Android части на экране списка и детальном экране
+            // обработчиком ошибок из ViewModelsUtils
+            // теперь case "нет ридми файла" обрабатывается во вью модели отдельно и при условии, что
+            // обработчик ошибок не получает этот кейс как ошибку
+//            if (e.response.status == HttpStatusCode.NotFound) {
+//                throw MissingReadmeException(e.response.status.toString())
+//            } else {
+//                throw e
+//            }
         }
-        response.body()
     }
 
     override fun getToken() = keyValueStorage.authToken
@@ -132,8 +148,9 @@ class AppRepositoryImpl(
         keyValueStorage.authToken = null
     }
 
-    override fun saveLogin(login: String) {
+    override fun saveCredentials(login: String, token: String) {
         keyValueStorage.login = login
+        keyValueStorage.authToken = token
     }
 
     override fun logout() {
@@ -148,7 +165,5 @@ class AppRepositoryImpl(
         private const val USERS_URL = "https://api.github.com/users"
         private const val REPOS_URL = "https://api.github.com/repos"
         private const val USER_CONTENT_URL = "https://raw.githubusercontent.com"
-        private const val REPOS_QUANTITY = "10"
-        private const val PAGES = "1"
     }
 }

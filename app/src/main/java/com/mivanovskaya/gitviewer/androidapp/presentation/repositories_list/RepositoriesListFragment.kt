@@ -3,94 +3,81 @@ package com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.databinding.FragmentRepositoriesListBinding
 import com.mivanovskaya.gitviewer.androidapp.presentation.base.BaseFragment
-import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.RepositoriesListViewModel.Companion.NO_INTERNET
 import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.RepositoriesListViewModel.State
 import com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list.adapter.RepoListAdapter
+import com.mivanovskaya.gitviewer.androidapp.presentation.tools.collectInStartedState
 import com.mivanovskaya.gitviewer.shared.domain.model.Repo
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>() {
 
-    private val viewModel by viewModel<RepositoriesListViewModel>()
-    private val adapter by lazy {
-        RepoListAdapter { item -> onItemClick(item) }
-    }
-
+    private val viewModel: RepositoriesListViewModel by viewModel()
     override fun initBinding(inflater: LayoutInflater) =
         FragmentRepositoriesListBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setAdapter()
-        observeState()
+        val adapter = RepoListAdapter { item -> onItemClick(item) }
+        binding.recycler.adapter = adapter
+        viewLifecycleOwner.collectInStartedState(viewModel.state) { updateUi(it, adapter) }
+
         setRetryButton()
         setLogoutButton()
     }
 
-    private fun setAdapter() {
-        binding.recycler.adapter = adapter
-    }
-
-    private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    updateUi(state)
-                }
-            }
-        }
-    }
-
-    private fun updateUi(state: State) {
+    private fun updateUi(state: State, adapter: RepoListAdapter) {
         with(binding) {
             commonProgress.progressBar.isVisible = (state == State.Loading)
             emptyRepo.isVisible = (state == State.Empty)
 
             commonConnectError.connectionError.isVisible =
-                ((state is State.Error) && (state.error == NO_INTERNET))
+                (state is State.Error && state.isNetworkError)
 
             commonOtherError.somethingError.isVisible =
-                ((state is State.Error) && (state.error != NO_INTERNET))
+                (state is State.Error && !state.isNetworkError)
 
-            commonOtherError.errorDescription.text =
-                if (state is State.Error && state.error != "null") getString(
-                    R.string.error_with_description, state.error
-                )
-                else getString(R.string.error)
+            val errorText =
+                if (state is State.Error && !state.isNetworkError) {
+                    getString(R.string.error)
+                } else null
+            commonOtherError.errorDescription.text = errorText
 
             recycler.isVisible = (state is State.Loaded)
-            retryButton.isVisible = (state is State.Error) || (state is State.Empty)
+            retryButton.isVisible =
+                (state is State.Error) || (state is State.Empty)
         }
         setRetryButtonText(state)
-        submitDataToAdapter(state)
+        submitDataToAdapter(state, adapter)
     }
 
-    private fun submitDataToAdapter(state: State) {
-        if (state is State.Loaded) adapter.submitList(state.repos)
-        else adapter.submitList(emptyList())
+    private fun submitDataToAdapter(state: State, adapter: RepoListAdapter) {
+        val list: List<Repo> =
+            if (state is State.Loaded) state.repos
+            else emptyList()
+
+        adapter.submitList(list)
     }
 
     private fun setRetryButtonText(state: State) {
-        binding.retryButton.text = if (state is State.Empty) getString(R.string.refresh)
-        else getString(R.string.retry)
+        val text =
+            if (state is State.Empty) getString(R.string.refresh)
+            else getString(R.string.retry)
+
+        binding.retryButton.text = text
     }
 
     private fun onItemClick(item: Repo) {
         findNavController().navigate(
-            RepositoriesListFragmentDirections.actionRepositoriesListFragmentToDetailInfoFragment(
-                item.name
-            )
+            RepositoriesListFragmentDirections
+                .actionRepositoriesListFragmentToDetailInfoFragment(item.name)
         )
     }
 
@@ -101,7 +88,7 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
     }
 
     private fun setLogoutButton() {
-        val button = binding.repositoriesBar.menu.getItem(0)
+        val button = requireActivity().findViewById<Toolbar>(R.id.toolbar).menu.getItem(0)
         button.setOnMenuItemClickListener {
             setLogoutAlertDialog()
             true
@@ -110,15 +97,17 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
 
     private fun setLogoutAlertDialog() {
         val dialog = MaterialAlertDialogBuilder(
-            requireContext(), R.style.MyThemeOverlay_Material_MaterialAlertDialog
+            requireContext(),
+            R.style.MyThemeOverlay_Material_MaterialAlertDialog
         )
         dialog.setTitle(R.string.logout_title)
             .setMessage(R.string.logout_message)
             .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.onLogoutButtonPressed()
                 navigateToAuth()
-            }.setNegativeButton(R.string.no) { _, _ ->
-                dialog.create().hide()
+            }
+            .setNegativeButton(R.string.no) { currentDialog, _ ->
+                currentDialog.cancel()
             }
         dialog.create().show()
     }

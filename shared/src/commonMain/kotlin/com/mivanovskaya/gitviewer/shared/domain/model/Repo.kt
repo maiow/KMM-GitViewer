@@ -17,7 +17,7 @@ data class RepoDetails(
     val name: String,
     val stargazersCount: Int,
     val watchersCount: Int,
-    val login: String,
+    val owner: String,
     val defaultBranch: String
 )
 

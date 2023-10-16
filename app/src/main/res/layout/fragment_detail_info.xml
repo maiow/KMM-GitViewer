@@ -1,266 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.detail_info.DetailInfoFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/top_appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/repositories_bar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/status_bar"
-            android:elevation="4dp"
-            app:menu="@menu/logout_menu"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            tools:title="@string/repositories" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <ImageView
-        android:id="@+id/icon_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/standard_margin"
-        android:layout_marginTop="24dp"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_link"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_appbar" />
-
-    <TextView
-        android:id="@+id/link"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mini_margin"
-        android:layout_marginEnd="@dimen/standard_margin"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/secondary"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/icon_link"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/icon_link"
-        app:layout_constraintTop_toTopOf="@id/icon_link"
-        tools:text="github.com/icerockdev/moko-resources" />
-
-    <ImageView
-        android:id="@+id/icon_license"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/standard_margin"
-        android:layout_marginTop="24dp"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_license"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/link" />
-
-    <TextView
-        android:id="@+id/license_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mini_margin"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/license"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/icon_license"
-        app:layout_constraintStart_toEndOf="@id/icon_license"
-        app:layout_constraintTop_toTopOf="@id/icon_license" />
-
-    <TextView
-        android:id="@+id/license"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mini_margin"
-        android:layout_marginEnd="@dimen/standard_margin"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="start"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/license_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline_watchers"
-        app:layout_constraintTop_toTopOf="@+id/license_title"
-        tools:text="GNU Affero General Public License v3.0" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_license"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="license_title, license" />
-
-    <ImageView
-        android:id="@+id/icon_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/standard_margin"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_star"
-        app:layout_constraintEnd_toEndOf="@+id/icon_license"
-        app:layout_constraintStart_toStartOf="@+id/icon_license"
-        app:layout_constraintTop_toBottomOf="@id/barrier_license" />
-
-    <TextView
-        android:id="@+id/stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/micro_margin"
-        android:fontFamily="sans-serif-medium"
-        android:text="@plurals/stars"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/icon_star"
-        app:layout_constraintEnd_toStartOf="@id/guideline_forks"
-        app:layout_constraintStart_toEndOf="@id/icon_star"
-        app:layout_constraintTop_toTopOf="@id/icon_star"
-        tools:text="1010 stars" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_forks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33" />
-
-    <ImageView
-        android:id="@+id/icon_fork"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/micro_margin"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_fork"
-        app:layout_constraintBottom_toBottomOf="@id/icon_star"
-        app:layout_constraintEnd_toStartOf="@+id/forks"
-        app:layout_constraintStart_toEndOf="@id/guideline_forks"
-        app:layout_constraintTop_toTopOf="@id/icon_star" />
-
-    <TextView
-        android:id="@+id/forks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/micro_margin"
-        android:fontFamily="sans-serif-medium"
-        android:text="@plurals/forks"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/icon_fork"
-        app:layout_constraintEnd_toStartOf="@id/guideline_watchers"
-        app:layout_constraintStart_toEndOf="@id/icon_fork"
-        app:layout_constraintTop_toTopOf="@id/icon_fork"
-        tools:text="101 forks" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_watchers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.63" />
-
-    <ImageView
-        android:id="@+id/icon_watcher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/micro_margin"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_watcher"
-        app:layout_constraintBottom_toBottomOf="@id/icon_star"
-        app:layout_constraintEnd_toStartOf="@+id/watchers"
-        app:layout_constraintStart_toEndOf="@id/guideline_watchers"
-        app:layout_constraintTop_toTopOf="@id/icon_star" />
-
-    <TextView
-        android:id="@+id/watchers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/micro_margin"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@plurals/watchers"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/icon_watcher"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/icon_watcher"
-        app:layout_constraintTop_toTopOf="@id/icon_watcher"
-        tools:text="10 watchers" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_scroll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="stars, forks, watchers" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/standard_margin"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barrier_scroll">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/readme"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginEnd="@dimen/standard_margin"
-            android:layout_marginBottom="@dimen/standard_margin"
-            android:textColor="@color/white"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stars"
-            tools:text="@tools:sample/lorem/random" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/icon_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginTop="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_link"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/link"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mini_margin"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/secondary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/icon_link"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/icon_link"
+                app:layout_constraintTop_toTopOf="@id/icon_link"
+                tools:text="github.com/icerockdev/moko-resources" />
+
+            <ImageView
+                android:id="@+id/icon_license"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginTop="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_license"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/link" />
+
+            <TextView
+                android:id="@+id/license_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mini_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/license"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/icon_license"
+                app:layout_constraintStart_toEndOf="@id/icon_license"
+                app:layout_constraintTop_toTopOf="@id/icon_license" />
+
+            <TextView
+                android:id="@+id/license"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mini_margin"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="start"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/license_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_watchers"
+                app:layout_constraintTop_toTopOf="@+id/license_title"
+                tools:text="GNU Affero General Public License v3.0" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_license"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="license_title, license" />
+
+            <ImageView
+                android:id="@+id/icon_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_star"
+                app:layout_constraintEnd_toEndOf="@+id/icon_license"
+                app:layout_constraintStart_toStartOf="@+id/icon_license"
+                app:layout_constraintTop_toBottomOf="@id/barrier_license" />
+
+            <TextView
+                android:id="@+id/stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/micro_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@plurals/stars"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/icon_star"
+                app:layout_constraintEnd_toStartOf="@id/guideline_forks"
+                app:layout_constraintStart_toEndOf="@id/icon_star"
+                app:layout_constraintTop_toTopOf="@id/icon_star"
+                tools:text="1010 stars" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_forks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33" />
+
+            <ImageView
+                android:id="@+id/icon_fork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/micro_margin"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_fork"
+                app:layout_constraintBottom_toBottomOf="@id/icon_star"
+                app:layout_constraintEnd_toStartOf="@+id/forks"
+                app:layout_constraintStart_toEndOf="@id/guideline_forks"
+                app:layout_constraintTop_toTopOf="@id/icon_star" />
+
+            <TextView
+                android:id="@+id/forks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/micro_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@plurals/forks"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/icon_fork"
+                app:layout_constraintEnd_toStartOf="@id/guideline_watchers"
+                app:layout_constraintStart_toEndOf="@id/icon_fork"
+                app:layout_constraintTop_toTopOf="@id/icon_fork"
+                tools:text="101 forks" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_watchers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.63" />
+
+            <ImageView
+                android:id="@+id/icon_watcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/micro_margin"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_watcher"
+                app:layout_constraintBottom_toBottomOf="@id/icon_star"
+                app:layout_constraintEnd_toStartOf="@+id/watchers"
+                app:layout_constraintStart_toEndOf="@id/guideline_watchers"
+                app:layout_constraintTop_toTopOf="@id/icon_star" />
+
+            <TextView
+                android:id="@+id/watchers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/micro_margin"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@plurals/watchers"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/icon_watcher"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/icon_watcher"
+                app:layout_constraintTop_toTopOf="@id/icon_watcher"
+                tools:text="10 watchers" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/repo_info_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:constraint_referenced_ids="icon_link, link, icon_license, license_title, license, icon_star, stars, icon_fork, forks, icon_watcher, watchers" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="stars, forks, watchers" />
+
+            <TextView
+                android:id="@+id/readme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:layout_marginBottom="@dimen/standard_margin"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier_scroll"
+                tools:text="@tools:sample/lorem/random" />
+
+            <ProgressBar
+                android:id="@+id/readme_progress"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/white"
+                android:indeterminateTintMode="src_in"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier_scroll" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <ProgressBar
-        android:id="@+id/readme_progress"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/white"
-        android:indeterminateTintMode="src_in"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon_star" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/retry_button"
-        style="@style/GreenButton"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:text="@string/retry"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         android:id="@+id/common_error"
         layout="@layout/common_connection_error"
         android:visibility="gone" />
-
-    <include
-        android:id="@+id/readme_error"
-        layout="@layout/common_connection_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon_star" />
 
     <include
         android:id="@+id/common_progress"
@@ -272,4 +250,12 @@
         layout="@layout/common_something_error"
         android:visibility="gone" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retry_button"
+        style="@style/GreenButton"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom|center"
+        android:text="@string/retry" />
+
+</FrameLayout>

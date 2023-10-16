@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AppRepository) : ViewModel() {
 
-    private var token: String? = null
+    private val token: MutableStateFlow<String?> = MutableStateFlow(null)
 
     private val _state = MutableStateFlow<State>(State.Idle)
     val state = _state.asStateFlow()
@@ -25,8 +25,8 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
     val actions: Flow<Action> = _actions.receiveAsFlow()
 
     init {
-        token = repository.getToken()
-        if (!token.isNullOrBlank()) {
+        token.value = repository.getToken()
+        if (!token.value.isNullOrBlank()) {
             viewModelScope.launch {
                 _actions.send(Action.RouteToMain)
             }
@@ -45,23 +45,19 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
         if (isValid(token)) {
             viewModelScope.launch(handler) {
                 _state.value = State.Loading
-                repository.saveLogin(repository.signIn(token).login)
+                repository.saveCredentials(login = repository.signIn(token).login, token = token)
                 _state.value = State.Idle
                 _actions.send(Action.RouteToMain)
             }
-        } else {
-            _state.value = State.InvalidInput(StringResource(R.string.invalid_token))
-        }
+        } else _state.value = State.InvalidInput(StringResource(R.string.invalid_token))
     }
 
     private fun isValid(token: String): Boolean =
-        token.contains(Regex("^ghp_[a-zA-Z0-9]{36}$"))
+        token.contains(Regex("^(gh[ps]_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9]{22}_[a-zA-Z0-9]{59})\$"))
 
     sealed interface State {
         object Idle : State
         object Loading : State
-
-        /** reason не String как в ТЗ, а StringValue, чтобы ViewModel не зависел от context*/
         data class InvalidInput(val reason: StringValue) : State
     }
 

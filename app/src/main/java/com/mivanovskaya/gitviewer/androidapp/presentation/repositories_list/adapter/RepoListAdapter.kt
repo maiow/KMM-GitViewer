@@ -11,15 +11,14 @@ class RepoListAdapter(
 ) : ListAdapter<Repo, RepoViewHolder>(RepoDiffUtil()) {
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        getItem(position)?.let { item ->
-            holder.bind(item) { repo -> onItemClick(repo) }
-        }
+
+        if (getItem(position) == null) return
+        else holder.bind(getItem(position)) { repo -> onItemClick(repo) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RepoViewHolder(
         RepositoriesViewHolderBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
+            LayoutInflater.from(parent.context), parent, false
         )
     )
 }

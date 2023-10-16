@@ -10,10 +10,12 @@ import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
 
 fun UserInfoDto.toUserInfo() = UserInfo(login)
 
-fun RepoDto.toRepo() = Repo(description, id, language, name)
-
-fun List<RepoDto>.toListRepo(): List<Repo> =
-    this.map { item -> item.toRepo() }
+fun RepoDto.toRepo() = Repo(
+    description = description,
+    id = id,
+    language = language,
+    name = name
+)
 
 fun RepoDto.toRepoDetails() = RepoDetails(
     description = description,
@@ -25,7 +27,7 @@ fun RepoDto.toRepoDetails() = RepoDetails(
     name = name,
     stargazersCount = stargazersCount,
     watchersCount = watchersCount,
-    login = owner.login,
+    owner = owner.login,
     defaultBranch = defaultBranch
 )
 

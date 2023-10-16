@@ -1,0 +1,58 @@
+[versions]
+agp = "8.1.2"
+kotlin = "1.9.10"
+ktor = "2.3.5"
+coroutines = "1.7.3"
+safeArgs = "2.6.0"
+crypto = "1.1.0-alpha06"
+napier = "2.6.1"
+koin = "3.4.1"
+multiplatform-settings = "1.0.0"
+appcompat = "1.6.1"
+navigation = "2.7.4"
+
+[libraries]
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-content-negotiations = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
+
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+crypto = { module = "androidx.security:security-crypto-ktx", version.ref = "crypto" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+
+multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
+
+android-core = { module = "androidx.core:core-ktx", version = "1.12.0" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+material = { module = "com.google.android.material:material", version = "1.10.0" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
+splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.1" }
+
+kotlinserialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.1" }
+
+fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "appcompat" }
+navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.6.1" }
+recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.3.1" }
+
+markdown = { module = "org.jetbrains:markdown", version = "0.4.1" }
+glide = { module = "com.github.bumptech.glide:glide", version = "4.15.1" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "safeArgs" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

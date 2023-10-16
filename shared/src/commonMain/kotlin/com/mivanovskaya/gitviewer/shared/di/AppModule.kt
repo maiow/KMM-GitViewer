@@ -10,12 +10,13 @@ import kotlinx.coroutines.IO
 import org.koin.dsl.module
 
 fun appModule() = module {
+    single { KeyValueStorage() }
     single<Antilog> { DebugAntilog() }
     factory { Dispatchers.IO }
     single<AppRepository> {
         AppRepositoryImpl(
             ioDispatcher = get(),
-            keyValueStorage = KeyValueStorage,
+            keyValueStorage = get(),
             antilog = get()
         )
     }

@@ -2,58 +2,52 @@ package com.mivanovskaya.gitviewer.androidapp.presentation.repositories_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue
+import com.mivanovskaya.gitviewer.androidapp.presentation.tools.requestWithErrorHandling
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.nio.channels.UnresolvedAddressException
 
 class RepositoriesListViewModel(private val repository: AppRepository) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State.Loading)
     val state = _state.asStateFlow()
 
+    private var job: Job? = null
+
     init {
         getRepositories()
     }
 
-    fun onRetryButtonClick() = getRepositories()
+    fun onRetryButtonClick(): Unit = getRepositories()
 
-    fun onLogoutButtonPressed() = repository.logout()
+    fun onLogoutButtonPressed(): Unit = repository.logout()
 
     private fun getRepositories() {
-        val job = Job()
-        viewModelScope.launch(job) {
-            try {
-                _state.value = State.Loading
-                val repos = repository.getRepositories()
-                if (repos.isEmpty())
-                    _state.value = State.Empty
-                else
-                    _state.value = State.Loaded(repos)
-            } catch (e: UnresolvedAddressException) {
-                handleNetworkException()
-            } catch (e: Exception) {
-                _state.value = State.Error(e.message.toString())
-            }
-            job.cancel()
+        job?.cancel()
+        job = viewModelScope.launch {
+            requestWithErrorHandling(
+                block = {
+                    _state.value = State.Loading
+                    val repos = repository.getRepositories(limit = 10, page = 1)
+                    if (repos.isEmpty())
+                        _state.value = State.Empty
+                    else
+                        _state.value = State.Loaded(repos)
+                },
+                errorFactory = State::Error,
+                setState = { _state.value = it }
+            )
         }
-    }
-
-    private fun handleNetworkException() {
-        _state.value = State.Error(NO_INTERNET)
     }
 
     sealed interface State {
         object Loading : State
         data class Loaded(val repos: List<Repo>) : State
-        data class Error(val error: String) : State
+        data class Error(val isNetworkError: Boolean, val error: StringValue) : State
         object Empty : State
-    }
-
-    companion object {
-        const val NO_INTERNET = "NO_INTERNET"
     }
 }

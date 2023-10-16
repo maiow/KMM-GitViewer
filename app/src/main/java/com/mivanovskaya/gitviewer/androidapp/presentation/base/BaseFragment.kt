@@ -10,7 +10,7 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
 
     private var _binding: B? = null
-    val binding get() = _binding!!
+    val binding get() = requireNotNull(_binding) { "binding is not initialized yet" }
 
     abstract fun initBinding(inflater: LayoutInflater): B
 
