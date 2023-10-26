@@ -43,8 +43,8 @@ kotlinserialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-js
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "appcompat" }
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.6.1" }
-recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.3.1" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.6.2" }
+recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.3.2" }
 
 markdown = { module = "org.jetbrains:markdown", version = "0.4.1" }
 glide = { module = "com.github.bumptech.glide:glide", version = "4.15.1" }

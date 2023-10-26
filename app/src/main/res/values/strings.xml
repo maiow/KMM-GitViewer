@@ -16,7 +16,7 @@
     <string name="ok">OK</string>
     <string name="error_with_description">Error %1$s</string>
     <string name="something_error">Something error</string>
-    <string name="check_your_something">Could be server unavailability or you need to update application version</string>
+    <string name="server_connection_error">Server connection error</string>
     <string name="logo">logo</string>
     <string name="license">License</string>
     <string name="no_license">No license</string>

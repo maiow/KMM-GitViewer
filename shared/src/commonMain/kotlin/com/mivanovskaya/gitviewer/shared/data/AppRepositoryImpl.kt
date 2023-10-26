@@ -31,6 +31,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.appendPathSegments
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.network.UnresolvedAddressException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -79,9 +80,24 @@ class AppRepositoryImpl(
     }
 
     override suspend fun signIn(token: String): UserInfo = withContext(ioDispatcher) {
-        updateBearerToken(token)
-        val userInfoDto: UserInfoDto = client.get(USER_URL).body()
-        userInfoDto.toUserInfo()
+        try {
+            updateBearerToken(token)
+            val userInfoDto: UserInfoDto = client.get(USER_URL).body()
+            userInfoDto.toUserInfo()
+        } catch (e: UnresolvedAddressException) {
+            //TODO: NoInternetException handling in iOS
+            Napier.d(tag = "Napier", message = "No Internet connection: $e")
+            throw NoInternetException(e.toString()) //e.message is null
+        } catch (e: ClientRequestException) {
+            //TODO: InvalidTokenException handling in iOS
+            if (e.response.status == HttpStatusCode.Unauthorized) {
+                Napier.d(tag = "Napier", message = "Invalid token: ${e.message}")
+                throw InvalidTokenException(e.response.status.description)
+            } else {
+                Napier.e("Napier: Some error: ", e)
+                throw e
+            }
+        }
     }
 
     override suspend fun getRepositories(limit: Int, page: Int): List<Repo> =
@@ -126,6 +142,7 @@ class AppRepositoryImpl(
             }
             response.body()
         } catch (e: ClientRequestException) {
+            Napier.e("Readme error: ${e.response.status.description}")
             if (e.response.status == HttpStatusCode.NotFound) null
             else throw e
 

@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue.StringResource
+import com.mivanovskaya.gitviewer.shared.data.InvalidTokenException
+import com.mivanovskaya.gitviewer.shared.data.NoInternetException
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
@@ -34,10 +36,25 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
     }
 
     private val handler = CoroutineExceptionHandler { _, e ->
-        viewModelScope.launch {
-            _actions.send(Action.ShowError("${e.message}"))
-        }
         repository.resetToken()
+        when (e) {
+            is InvalidTokenException -> {
+                _state.value = State.InvalidInput(StringResource(R.string.invalid_token))
+                return@CoroutineExceptionHandler
+            }
+
+            is NoInternetException -> {
+                viewModelScope.launch {
+                    _actions.send(Action.ShowError(StringResource(R.string.check_network)))
+                }
+            }
+
+            else -> {
+                viewModelScope.launch {
+                    _actions.send(Action.ShowError(StringResource(R.string.server_connection_error)))
+                }
+            }
+        }
         _state.value = State.InvalidInput(StringResource(R.string.error))
     }
 
@@ -62,7 +79,7 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
     }
 
     sealed interface Action {
-        data class ShowError(val message: String) : Action
+        data class ShowError(val message: StringValue) : Action
         object RouteToMain : Action
     }
 }

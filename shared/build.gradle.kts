@@ -41,6 +41,7 @@ kotlin {
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization)
             implementation(libs.napier)
+            implementation(libs.multiplatform.settings)
 
             api(libs.koin.core)
         }
@@ -52,26 +53,10 @@ kotlin {
             implementation(libs.crypto)
         }
 
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
         val iosMain by getting {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
             dependencies {
                 implementation(libs.ktor.client.darwin)
             }
-        }
-
-        val shared by creating {
-            dependencies {
-                implementation(libs.multiplatform.settings)
-            }
-            androidMain.dependsOn(this)
-            iosMain.dependsOn(this)
-            commonMain.dependsOn(this)
         }
     }
 }
