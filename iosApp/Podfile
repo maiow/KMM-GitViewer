@@ -1,0 +1,9 @@
+platform :ios, '13.0'
+
+target 'iOSGitViewer' do
+  use_frameworks!
+
+  pod 'Down', '0.11.0'
+  pod 'IBLocalizable', '1.3.0'
+  
+end

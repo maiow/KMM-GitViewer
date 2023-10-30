@@ -11,14 +11,14 @@ import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
 fun UserInfoDto.toUserInfo() = UserInfo(login)
 
 fun RepoDto.toRepo() = Repo(
-    description = description,
+    descriptionText = description,
     id = id,
     language = language,
     name = name
 )
 
 fun RepoDto.toRepoDetails() = RepoDetails(
-    description = description,
+    descriptionText = description,
     forksCount = forksCount,
     htmlUrl = htmlUrl,
     id = id,

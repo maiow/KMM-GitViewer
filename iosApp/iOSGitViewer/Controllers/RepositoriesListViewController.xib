@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RepositoriesListViewController" customModule="iOSGitViewer" customModuleProvider="target">
+            <connections>
+                <outlet property="emptyView" destination="1de-xW-DMi" id="iQe-LH-00X"/>
+                <outlet property="errorView" destination="mdn-4s-eNm" id="O31-5H-Ki6"/>
+                <outlet property="noInternetView" destination="J5R-96-oMr" id="71T-4N-wK5"/>
+                <outlet property="retryButton" destination="zfO-vl-BIx" id="lba-v8-x6M"/>
+                <outlet property="spinner" destination="fD7-0p-9jH" id="0eg-ZG-vY5"/>
+                <outlet property="tableView" destination="nj5-Pn-b8F" id="E4C-uY-4ca"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="fD7-0p-9jH">
+                    <rect key="frame" x="178" y="407.66666666666669" width="37" height="37"/>
+                    <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </activityIndicatorView>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="nj5-Pn-b8F">
+                    <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                    <color key="backgroundColor" name="Background"/>
+                    <color key="separatorColor" name="DarkGrey"/>
+                </tableView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdn-4s-eNm" customClass="ErrorView" customModule="iOSGitViewer" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="59" width="393" height="695"/>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J5R-96-oMr" customClass="NoInternetView" customModule="iOSGitViewer" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="59" width="393" height="695"/>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1de-xW-DMi" customClass="EmptyView" customModule="iOSGitViewer" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="59" width="393" height="691"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zfO-vl-BIx" customClass="RetryButtonView" customModule="iOSGitViewer" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="750" width="393" height="68"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="68" id="ZZI-CW-yN3"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="Background"/>
+            <constraints>
+                <constraint firstItem="J5R-96-oMr" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="37h-RI-rTb"/>
+                <constraint firstItem="zfO-vl-BIx" firstAttribute="top" secondItem="1de-xW-DMi" secondAttribute="bottom" id="G0w-lY-r90"/>
+                <constraint firstItem="nj5-Pn-b8F" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="I3k-OI-mED"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="mdn-4s-eNm" secondAttribute="bottom" constant="64" id="I6W-wI-gqe"/>
+                <constraint firstItem="mdn-4s-eNm" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Ib3-Yo-4Xe"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="zfO-vl-BIx" secondAttribute="trailing" id="Oeq-qh-geW"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="zfO-vl-BIx" secondAttribute="bottom" id="Ojp-yl-FDA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mdn-4s-eNm" secondAttribute="trailing" id="P0j-Cr-g5W"/>
+                <constraint firstItem="nj5-Pn-b8F" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="RNW-MS-akx"/>
+                <constraint firstItem="1de-xW-DMi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="RbX-4z-e8d"/>
+                <constraint firstItem="fD7-0p-9jH" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="S4p-Tu-jVa"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="nj5-Pn-b8F" secondAttribute="trailing" id="TwY-BQ-s0W"/>
+                <constraint firstItem="1de-xW-DMi" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="VhR-7L-h7x"/>
+                <constraint firstItem="zfO-vl-BIx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YDx-vn-DW1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="J5R-96-oMr" secondAttribute="trailing" id="awq-Db-K0E"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1de-xW-DMi" secondAttribute="trailing" id="hEz-Tj-roN"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="J5R-96-oMr" secondAttribute="bottom" constant="64" id="q8S-ng-sh1"/>
+                <constraint firstItem="mdn-4s-eNm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="syB-gB-CGV"/>
+                <constraint firstItem="J5R-96-oMr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="vOP-t9-G4r"/>
+                <constraint firstItem="fD7-0p-9jH" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="yxm-ur-8Q6"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="nj5-Pn-b8F" secondAttribute="bottom" id="zL5-7m-WLI"/>
+            </constraints>
+            <point key="canvasLocation" x="139.69465648854961" y="19.718309859154932"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="Background">
+            <color red="0.050999999046325684" green="0.067000001668930054" blue="0.090000003576278687" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="DarkGrey">
+            <color red="0.12941176470588237" green="0.14901960784313725" blue="0.17647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

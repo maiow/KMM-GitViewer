@@ -13,7 +13,6 @@ import io.github.aakira.napier.Antilog
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
@@ -31,7 +30,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.appendPathSegments
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.util.network.UnresolvedAddressException
+import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -41,8 +40,7 @@ class AppRepositoryImpl(
     private val keyValueStorage: KeyValueStorage,
     private val antilog: Antilog
 ) : AppRepository {
-
-    private val client = HttpClient(CIO) {
+    private val client = HttpClient() {
         install(Auth) {
             bearer {
                 if (keyValueStorage.authToken != null) {
@@ -84,19 +82,23 @@ class AppRepositoryImpl(
             updateBearerToken(token)
             val userInfoDto: UserInfoDto = client.get(USER_URL).body()
             userInfoDto.toUserInfo()
-        } catch (e: UnresolvedAddressException) {
-            //TODO: NoInternetException handling in iOS
-            Napier.d(tag = "Napier", message = "No Internet connection: $e")
-            throw NoInternetException(e.toString()) //e.message is null
+
+            //TODO: catch & handle serialization exception
+        } catch (e: IOException) {
+            Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
+            throw NoInternetException(e.message.toString())
+
         } catch (e: ClientRequestException) {
-            //TODO: InvalidTokenException handling in iOS
             if (e.response.status == HttpStatusCode.Unauthorized) {
                 Napier.d(tag = "Napier", message = "Invalid token: ${e.message}")
                 throw InvalidTokenException(e.response.status.description)
             } else {
-                Napier.e("Napier: Some error: ", e)
+                Napier.e("Napier: Some other client request error: ", e)
                 throw e
             }
+        } catch (e: Exception) {
+            Napier.e("Napier: Some error: ", e)
+            throw e
         }
     }
 

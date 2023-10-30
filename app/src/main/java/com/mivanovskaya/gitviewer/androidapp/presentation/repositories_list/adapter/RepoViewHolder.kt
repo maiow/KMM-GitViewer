@@ -16,7 +16,7 @@ class RepoViewHolder(private val binding: RepositoriesViewHolderBinding) :
             repoCard.setOnClickListener { onClick(item) }
 
             title.text = item.name
-            description.text = item.description
+            description.text = item.descriptionText
             language.text = item.language
 
             val color = when (item.language) {
