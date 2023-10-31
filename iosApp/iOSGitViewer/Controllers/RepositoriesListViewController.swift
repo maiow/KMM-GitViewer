@@ -75,12 +75,10 @@ final class RepositoriesListViewController: UIViewController {
     private func setErrorDescriptionText(with state: ReposScreenState) {
         let errorText = switch state {
         case .error(let error): {
-            if let serializationError = error as? SerializationError {
-                return serializationError.userDescription
-            } else if let otherError = error as? ServerConnectionError {
-                return otherError.userDescription
+            if let serializationError = error.kotlinException as? BadSerializationException  {
+                NSLocalizedString("uncorrectServerData", comment: "")
             } else {
-                fatalError("Unknown error type, nothing to show to the users: \(error)")
+                NSLocalizedString("serverConnectionError", comment: "")
             }
         }()
         default: ""
@@ -101,7 +99,10 @@ final class RepositoriesListViewController: UIViewController {
                 self.spinner.stopAnimating()
                 
                 guard let repos = repos, error == nil else {
-                    self.handleFailure(error! as NSError/*as! ReposError*/)
+                    guard let error = error as NSError? else {
+                        fatalError("Unknown error of non-NSError type")
+                    }
+                    self.handleFailure(error)
                     return
                 }
                 self.handleSuccess(repos)
@@ -118,14 +119,13 @@ final class RepositoriesListViewController: UIViewController {
     }
     
     private func handleFailure(_ error: NSError) {
-//        switch error {
-//        case .noInternet:
-//            self.state = .noInternet
-//            
-//        case .otherError(let error):
-//            self.state = .error(error: error)
+        
+        if error.kotlinException is NoInternetException {
+            self.state = .noInternet
+        } else {
+            self.state = .error(error: error)
             print("Repos list error: \(error.localizedDescription)")
-//        }
+        }
     }
     
     @objc

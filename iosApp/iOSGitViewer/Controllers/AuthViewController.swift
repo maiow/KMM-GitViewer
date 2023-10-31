@@ -78,9 +78,9 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
                 self.spinner.startAnimating()
                 
                 guard let userInfo = result, error == nil else {
-                    //TODO: подумать, могут ли тут быть не NSError ошибки
-                    print("Some Error: \(String(describing: error))")
-                    guard let error = error as NSError? else { return }
+                    guard let error = error as NSError? else {
+                        fatalError("Unknown error of non-NSError type")
+                    }
                     self.handleError(error)
                     return
                 }
@@ -101,13 +101,17 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
             self.state = .error(.noInternet)
             self.showAlert(error: NSLocalizedString("checkYourInternetConnection", comment: ""))
             
+        } else if error.kotlinException is BadSerializationException {
+            self.state = .error(.otherError(error))
+            self.showAlert(error: NSLocalizedString("uncorrectServerData", comment: ""))
+            
         } else if error.kotlinException is InvalidTokenException {
             self.state = .invalidToken
             
         } else {
             self.state = .error(.otherError(error))
             print("Auth error: \(error.localizedDescription)")
-            self.showAlert(error: NSLocalizedString("unknownError", comment: ""))
+            self.showAlert(error: NSLocalizedString("serverConnectionError", comment: ""))
         }
     }
     

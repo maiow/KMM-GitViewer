@@ -46,7 +46,7 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
 
             val errorText =
                 if (state is State.Error && !state.isNetworkError) {
-                    getString(R.string.error)
+                    state.error.asString(requireContext())
                 } else null
             commonOtherError.errorDescription.text = errorText
 

@@ -10,7 +10,7 @@ import Foundation
 enum ReadmeState {
     case loading
     case success(readme: String)
-    case error(error: Error)
+    case error(error: NSError)
     case noInternet
     case empty
     

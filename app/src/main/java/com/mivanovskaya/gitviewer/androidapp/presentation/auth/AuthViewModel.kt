@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue.StringResource
+import com.mivanovskaya.gitviewer.shared.data.BadSerializationException
 import com.mivanovskaya.gitviewer.shared.data.InvalidTokenException
 import com.mivanovskaya.gitviewer.shared.data.NoInternetException
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
@@ -46,6 +47,12 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
             is NoInternetException -> {
                 viewModelScope.launch {
                     _actions.send(Action.ShowError(StringResource(R.string.check_network)))
+                }
+            }
+
+            is BadSerializationException -> {
+                viewModelScope.launch {
+                    _actions.send(Action.ShowError(StringResource(R.string.serialization_error)))
                 }
             }
 

@@ -19,11 +19,8 @@
 		2A707E542ADEAD7A000830CD /* AuthScreenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A707E532ADEAD7A000830CD /* AuthScreenError.swift */; };
 		2A707E562AE10EF8000830CD /* ReposError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A707E552AE10EF7000830CD /* ReposError.swift */; };
 		2A707E582AE1322F000830CD /* ReadmeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A707E572AE1322F000830CD /* ReadmeError.swift */; };
-		2ABC60F12ABAF76900784EA0 /* AppRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABC60F02ABAF76900784EA0 /* AppRepository.swift */; };
 		2ABC60F82ABB0AB200784EA0 /* RepositoriesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABC60F62ABB0AB200784EA0 /* RepositoriesListViewController.swift */; };
 		2ABC60F92ABB0AB200784EA0 /* RepositoriesListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2ABC60F72ABB0AB200784EA0 /* RepositoriesListViewController.xib */; };
-		2ADB6E132AE925B500CD6126 /* SerializationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADB6E122AE925B500CD6126 /* SerializationError.swift */; };
-		2ADB6E152AE9387900CD6126 /* ServerConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADB6E142AE9387900CD6126 /* ServerConnectionError.swift */; };
 		2AED54202AE69B38008E5D6B /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AED541F2AE69B38008E5D6B /* UIViewControllerExtensions.swift */; };
 		2AED54222AE6A546008E5D6B /* UINavigationControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AED54212AE6A546008E5D6B /* UINavigationControllerExtensions.swift */; };
 		2AED54282AE7D52A008E5D6B /* ReadmeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AED54272AE7D52A008E5D6B /* ReadmeState.swift */; };
@@ -61,11 +58,8 @@
 		2A707E532ADEAD7A000830CD /* AuthScreenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthScreenError.swift; sourceTree = "<group>"; };
 		2A707E552AE10EF7000830CD /* ReposError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposError.swift; sourceTree = "<group>"; };
 		2A707E572AE1322F000830CD /* ReadmeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadmeError.swift; sourceTree = "<group>"; };
-		2ABC60F02ABAF76900784EA0 /* AppRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRepository.swift; sourceTree = "<group>"; };
 		2ABC60F62ABB0AB200784EA0 /* RepositoriesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesListViewController.swift; sourceTree = "<group>"; };
 		2ABC60F72ABB0AB200784EA0 /* RepositoriesListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepositoriesListViewController.xib; sourceTree = "<group>"; };
-		2ADB6E122AE925B500CD6126 /* SerializationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializationError.swift; sourceTree = "<group>"; };
-		2ADB6E142AE9387900CD6126 /* ServerConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionError.swift; sourceTree = "<group>"; };
 		2AED541F2AE69B38008E5D6B /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		2AED54212AE6A546008E5D6B /* UINavigationControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtensions.swift; sourceTree = "<group>"; };
 		2AED54272AE7D52A008E5D6B /* ReadmeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadmeState.swift; sourceTree = "<group>"; };
@@ -133,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				2A167FFE2ABAC5110048E6C8 /* Resources */,
-				2ABC60EF2ABAF74200784EA0 /* Data */,
 				2A167FFF2ABAC5CE0048E6C8 /* Controllers */,
 				2AF035FE2AC2F18C009C3341 /* Views */,
 				2AF036032AC32A53009C3341 /* Tools */,
@@ -165,16 +158,6 @@
 				2AF2DB522AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.xib */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		2ABC60EF2ABAF74200784EA0 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				2ABC60F02ABAF76900784EA0 /* AppRepository.swift */,
-				2ADB6E122AE925B500CD6126 /* SerializationError.swift */,
-				2ADB6E142AE9387900CD6126 /* ServerConnectionError.swift */,
-			);
-			path = Data;
 			sourceTree = "<group>";
 		};
 		2AF035FE2AC2F18C009C3341 /* Views */ = {
@@ -366,7 +349,6 @@
 				2AF0361B2AC5536B009C3341 /* RetryButtonView.swift in Sources */,
 				2A1680022ABAC6960048E6C8 /* AuthViewController.swift in Sources */,
 				2A167FEB2ABAC3830048E6C8 /* AppDelegate.swift in Sources */,
-				2ADB6E152AE9387900CD6126 /* ServerConnectionError.swift in Sources */,
 				2A707E562AE10EF8000830CD /* ReposError.swift in Sources */,
 				2AF2DB532AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.swift in Sources */,
 				2AF036112AC47DC7009C3341 /* ErrorView.swift in Sources */,
@@ -374,7 +356,6 @@
 				2AED54282AE7D52A008E5D6B /* ReadmeState.swift in Sources */,
 				2A167FED2ABAC3830048E6C8 /* SceneDelegate.swift in Sources */,
 				2A69985F2ADE6A8600010B9E /* AuthScreenState.swift in Sources */,
-				2ADB6E132AE925B500CD6126 /* SerializationError.swift in Sources */,
 				2AF036172AC54E7D009C3341 /* NoInternetView.swift in Sources */,
 				2ABC60F82ABB0AB200784EA0 /* RepositoriesListViewController.swift in Sources */,
 				2AED54222AE6A546008E5D6B /* UINavigationControllerExtensions.swift in Sources */,
@@ -383,7 +364,6 @@
 				2AED54202AE69B38008E5D6B /* UIViewControllerExtensions.swift in Sources */,
 				2A707E542ADEAD7A000830CD /* AuthScreenError.swift in Sources */,
 				2A707E582AE1322F000830CD /* ReadmeError.swift in Sources */,
-				2ABC60F12ABAF76900784EA0 /* AppRepository.swift in Sources */,
 				2AF036212AC5A8A8009C3341 /* EmptyView.swift in Sources */,
 				2AF554882AEF9E250077CAC5 /* NSErrorExtensions.swift in Sources */,
 				2A69985D2ADE6A6400010B9E /* DetailsScrenState.swift in Sources */,
@@ -554,8 +534,6 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					"\"Alamofire\"",
-					"-framework",
 					"\"CFNetwork\"",
 					"-framework",
 					"\"Down\"",
@@ -602,8 +580,6 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-framework",
-					"\"Alamofire\"",
 					"-framework",
 					"\"CFNetwork\"",
 					"-framework",

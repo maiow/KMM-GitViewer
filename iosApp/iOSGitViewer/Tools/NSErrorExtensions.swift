@@ -8,6 +8,7 @@
 import Foundation
 import shared
 
+//TODO: delete, was needed for exceptions debug
 extension NSError {
     
 //    var isThrowable: Bool {

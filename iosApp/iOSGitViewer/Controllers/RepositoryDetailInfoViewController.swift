@@ -91,12 +91,10 @@ final class RepositoryDetailInfoViewController: UIViewController {
         let errorText = switch state {
         case .error(let error),
                 .success(_, readmeState: .error(let error)): {
-                    if let serializationError = error as? SerializationError {
-                        return serializationError.userDescription
-                    } else if let otherError = error as? ServerConnectionError {
-                        return otherError.userDescription
+                    if let serializationError = error.kotlinException as? BadSerializationException  {
+                        NSLocalizedString("uncorrectServerData", comment: "")
                     } else {
-                        fatalError("Unknown error type, nothing to show to the users: \(error)")
+                        NSLocalizedString("serverConnectionError", comment: "")
                     }
                 }()
         default: ""
@@ -128,18 +126,22 @@ final class RepositoryDetailInfoViewController: UIViewController {
     private func fetchRepositoryInfo() {
         state = .loading
         
-//        appRepository.getRepository(repoName: repo.name) { [weak self] result in
-//            guard let self = self else { return }
-//            
-//            DispatchQueue.main.async {
-//                self.spinner.stopAnimating()
-//                
-//                switch result {
-//                case .success(let repoInfo): self.handleRepoInfoSuccess(repoInfo)
-//                case .failure(let error): self.handleRepoInfoFailure(error)
-//                }
-//            }
-//        }
+        appRepository.getRepository(repoName: repo.name) { [weak self] repo, error in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.spinner.stopAnimating()
+                
+                guard let repoInfo = repo, error == nil else {
+                    guard let error = error as NSError? else {
+                        fatalError("Unknown error of non-NSError type")
+                    }
+                    self.handleRepoInfoFailure(error)
+                    return
+                }
+                self.handleRepoInfoSuccess(repoInfo)
+            }
+        }
     }
     
     private func handleRepoInfoSuccess(_ repoInfo: shared.RepoDetails) {
@@ -149,12 +151,11 @@ final class RepositoryDetailInfoViewController: UIViewController {
         getRepoReadme(repo: repoInfo, ownerName: repoInfo.owner, repositoryName: repo.name, branchName: repoInfo.defaultBranch)
     }
     
-    private func handleRepoInfoFailure(_ error: ReposError) {
-        switch error {
-        case .noInternet:
+    private func handleRepoInfoFailure(_ error: NSError) {
+        
+        if error.kotlinException is NoInternetException {
             self.state = .noInternet
-            
-        case .otherError(let error):
+        } else {
             self.state = .error(error)
             print("Repo info error: \(error.localizedDescription)")
         }
@@ -183,23 +184,23 @@ final class RepositoryDetailInfoViewController: UIViewController {
         
         self.readmeSpinner.stopAnimating()
         
-        switch error {
-        case .noInternet:
-            self.state = .success(repo: repoInfo, readmeState: ReadmeState.noInternet)
-            
-        case .noReadme:
-            self.state = .success(
-                repo: repoInfo,
-                readmeState: ReadmeState.empty
-            )
-            
-        case .otherError(let error):
-            self.state = .success(
-                repo: repoInfo,
-                readmeState: ReadmeState.error(error: error)
-            )
-            print("Readme error: \(error.localizedDescription)")
-        }
+//        switch error {
+//        case .noInternet:
+//            self.state = .success(repo: repoInfo, readmeState: ReadmeState.noInternet)
+//            
+//        case .noReadme:
+//            self.state = .success(
+//                repo: repoInfo,
+//                readmeState: ReadmeState.empty
+//            )
+//            
+//        case .otherError(let error):
+//            self.state = .success(
+//                repo: repoInfo,
+//                readmeState: ReadmeState.error(error: error)
+//            )
+//            print("Readme error: \(error.localizedDescription)")
+//        }
     }
     
     private func showRepoInfo(with repo: shared.RepoDetails) {

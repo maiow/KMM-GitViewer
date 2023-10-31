@@ -29,6 +29,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.appendPathSegments
 import io.ktor.http.headers
+import io.ktor.serialization.JsonConvertException
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.CoroutineDispatcher
@@ -83,7 +84,10 @@ class AppRepositoryImpl(
             val userInfoDto: UserInfoDto = client.get(USER_URL).body()
             userInfoDto.toUserInfo()
 
-            //TODO: catch & handle serialization exception
+        } catch (e: JsonConvertException) {
+            Napier.d(tag = "Napier", message = "Serialization exception: ${e.message}")
+            throw BadSerializationException(e.message.toString())
+
         } catch (e: IOException) {
             Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
             throw NoInternetException(e.message.toString())
@@ -93,7 +97,7 @@ class AppRepositoryImpl(
                 Napier.d(tag = "Napier", message = "Invalid token: ${e.message}")
                 throw InvalidTokenException(e.response.status.description)
             } else {
-                Napier.e("Napier: Some other client request error: ", e)
+                Napier.e("Napier: Client request error: ", e)
                 throw e
             }
         } catch (e: Exception) {
@@ -104,33 +108,61 @@ class AppRepositoryImpl(
 
     override suspend fun getRepositories(limit: Int, page: Int): List<Repo> =
         withContext(ioDispatcher) {
-            val repos: List<RepoDto> = client.get(USERS_URL) {
+            try {
+                val repos: List<RepoDto> = client.get(USERS_URL) {
+                    url {
+                        appendPathSegments(
+                            requireNotNull(keyValueStorage.login) {
+                                "Error: authorized username not found in storage"
+                            },
+                            "repos"
+                        )
+                        parameters.append("per_page", limit.toString())
+                        parameters.append("page", page.toString())
+                    }
+                }.body()
+                repos.map { it.toRepo() }
+
+            } catch (e: JsonConvertException) {
+                Napier.d(tag = "Napier", message = "Serialization exception: ${e.message}")
+                throw BadSerializationException(e.message.toString())
+
+            } catch (e: IOException) {
+                Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
+                throw NoInternetException(e.message.toString())
+
+            } catch (e: Exception) {
+                Napier.e("Napier: Some error: ", e)
+                throw e
+            }
+        }
+
+    override suspend fun getRepository(repoName: String): RepoDetails = withContext(ioDispatcher) {
+        try {
+            val repo: RepoDto = client.get(REPOS_URL) {
                 url {
                     appendPathSegments(
                         requireNotNull(keyValueStorage.login) {
                             "Error: authorized username not found in storage"
                         },
-                        "repos"
+                        repoName
                     )
-                    parameters.append("per_page", limit.toString())
-                    parameters.append("page", page.toString())
                 }
             }.body()
-            repos.map { it.toRepo() }
-        }
+            repo.toRepoDetails()
 
-    override suspend fun getRepository(repoName: String): RepoDetails = withContext(ioDispatcher) {
-        val repo: RepoDto = client.get(REPOS_URL) {
-            url {
-                appendPathSegments(
-                    requireNotNull(keyValueStorage.login) {
-                        "Error: authorized username not found in storage"
-                    },
-                    repoName
-                )
-            }
-        }.body()
-        repo.toRepoDetails()
+        } catch (e: JsonConvertException) {
+            Napier.d(tag = "Napier", message = "Serialization exception: ${e.message}")
+            throw BadSerializationException(e.message.toString())
+
+        } catch (e: IOException) {
+            Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
+            throw NoInternetException(e.message.toString())
+
+        } catch (e: Exception) {
+            Napier.e("Napier: Some error: ", e)
+            throw e
+        }
     }
 
     override suspend fun getRepositoryReadme(
@@ -143,6 +175,15 @@ class AppRepositoryImpl(
                 }
             }
             response.body()
+
+        } catch (e: JsonConvertException) {
+            Napier.d(tag = "Napier", message = "Serialization exception: ${e.message}")
+            throw BadSerializationException(e.message.toString())
+
+        } catch (e: IOException) {
+            Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
+            throw NoInternetException(e.message.toString())
+
         } catch (e: ClientRequestException) {
             Napier.e("Readme error: ${e.response.status.description}")
             if (e.response.status == HttpStatusCode.NotFound) null
@@ -158,6 +199,9 @@ class AppRepositoryImpl(
 //            } else {
 //                throw e
 //            }
+        } catch (e: Exception) {
+            Napier.e("Napier: Some error: ", e)
+            throw e
         }
     }
 

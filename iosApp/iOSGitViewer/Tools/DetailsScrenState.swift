@@ -11,7 +11,7 @@ import shared
 enum DetailScreenState {
     case loading
     case success(repo: shared.RepoDetails, readmeState: ReadmeState)
-    case error(_ cause: Error)
+    case error(_ cause: NSError)
     case noInternet
     
     var isLoading: Bool {

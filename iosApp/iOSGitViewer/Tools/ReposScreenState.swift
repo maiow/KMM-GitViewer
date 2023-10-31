@@ -11,7 +11,7 @@ import shared
 enum ReposScreenState {
     case loading
     case success(repos: Array<shared.Repo>)
-    case error(error: Error)
+    case error(error: NSError)
     case noInternet
     case empty
     
