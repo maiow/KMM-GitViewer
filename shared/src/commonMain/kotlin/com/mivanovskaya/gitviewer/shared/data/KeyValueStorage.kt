@@ -3,7 +3,7 @@ package com.mivanovskaya.gitviewer.shared.data
 import com.mivanovskaya.gitviewer.shared.getSettings
 import com.russhwolf.settings.Settings
 
-class KeyValueStorage {
+internal class KeyValueStorage {
     private val settings: Settings = getSettings()
 
     var authToken: String?

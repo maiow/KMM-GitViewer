@@ -2,6 +2,9 @@ package com.mivanovskaya.gitviewer.shared.data
 
 import com.mivanovskaya.gitviewer.shared.data.dto.RepoDto
 import com.mivanovskaya.gitviewer.shared.data.dto.UserInfoDto
+import com.mivanovskaya.gitviewer.shared.data.exceptions.BadSerializationException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.InvalidTokenException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.NoInternetException
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.shared.domain.model.RepoDetails
@@ -36,7 +39,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
-class AppRepositoryImpl(
+internal class AppRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher,
     private val keyValueStorage: KeyValueStorage,
     private val antilog: Antilog
@@ -189,16 +192,6 @@ class AppRepositoryImpl(
             if (e.response.status == HttpStatusCode.NotFound) null
             else throw e
 
-            // было так, как закомментировано ниже,
-            // но из-за унификации обработки ошибок в Android части на экране списка и детальном экране
-            // обработчиком ошибок из ViewModelsUtils
-            // теперь case "нет ридми файла" обрабатывается во вью модели отдельно и при условии, что
-            // обработчик ошибок не получает этот кейс как ошибку
-//            if (e.response.status == HttpStatusCode.NotFound) {
-//                throw MissingReadmeException(e.response.status.toString())
-//            } else {
-//                throw e
-//            }
         } catch (e: Exception) {
             Napier.e("Napier: Some error: ", e)
             throw e

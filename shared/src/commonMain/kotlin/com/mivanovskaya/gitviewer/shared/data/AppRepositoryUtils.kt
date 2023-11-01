@@ -1,5 +1,7 @@
 package com.mivanovskaya.gitviewer.shared.data
 
+import com.mivanovskaya.gitviewer.shared.data.exceptions.BadSerializationException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.NoInternetException
 import io.github.aakira.napier.Napier
 import io.ktor.serialization.JsonConvertException
 import io.ktor.utils.io.errors.IOException

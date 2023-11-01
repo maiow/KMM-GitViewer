@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RepoDto(
+internal data class RepoDto(
     val description: String?,
     @SerialName("forks_count")
     val forksCount: Int,
@@ -24,7 +24,7 @@ data class RepoDto(
 )
 
 @Serializable
-data class LicenseDto(val name: String)
+internal data class LicenseDto(val name: String)
 
 @Serializable
-data class OwnerDto(val login: String)
+internal data class OwnerDto(val login: String)

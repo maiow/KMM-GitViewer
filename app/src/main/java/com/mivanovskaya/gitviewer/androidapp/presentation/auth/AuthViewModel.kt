@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.mivanovskaya.gitviewer.androidapp.R
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue
 import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue.StringResource
-import com.mivanovskaya.gitviewer.shared.data.BadSerializationException
-import com.mivanovskaya.gitviewer.shared.data.InvalidTokenException
-import com.mivanovskaya.gitviewer.shared.data.NoInternetException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.BadSerializationException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.InvalidTokenException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.NoInternetException
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel

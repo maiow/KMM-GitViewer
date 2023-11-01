@@ -39,7 +39,6 @@
 		2AF036212AC5A8A8009C3341 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF036202AC5A8A8009C3341 /* EmptyView.swift */; };
 		2AF2DB532AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2DB512AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.swift */; };
 		2AF2DB542AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF2DB522AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.xib */; };
-		2AF554882AEF9E250077CAC5 /* NSErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF554872AEF9E250077CAC5 /* NSErrorExtensions.swift */; };
 		5EEC1A188EDC7469205A2496 /* Pods_iOSGitViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CADD79884BF4019DF0181F1C /* Pods_iOSGitViewer.framework */; };
 /* End PBXBuildFile section */
 
@@ -78,7 +77,6 @@
 		2AF036202AC5A8A8009C3341 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		2AF2DB512AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDetailInfoViewController.swift; sourceTree = "<group>"; };
 		2AF2DB522AC2A7F30090F8A4 /* RepositoryDetailInfoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepositoryDetailInfoViewController.xib; sourceTree = "<group>"; };
-		2AF554872AEF9E250077CAC5 /* NSErrorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSErrorExtensions.swift; sourceTree = "<group>"; };
 		9941842D2FB766CE40455130 /* Pods-iOSGitViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSGitViewer.release.xcconfig"; path = "Target Support Files/Pods-iOSGitViewer/Pods-iOSGitViewer.release.xcconfig"; sourceTree = "<group>"; };
 		CADD79884BF4019DF0181F1C /* Pods_iOSGitViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOSGitViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3B137A2F886B52D4C24F681 /* Pods-iOSGitViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSGitViewer.debug.xcconfig"; path = "Target Support Files/Pods-iOSGitViewer/Pods-iOSGitViewer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 				2AF036082AC3FCAC009C3341 /* ReposScreenState.swift */,
 				2A69985C2ADE6A6400010B9E /* DetailsScrenState.swift */,
 				2AED54272AE7D52A008E5D6B /* ReadmeState.swift */,
-				2AF554872AEF9E250077CAC5 /* NSErrorExtensions.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -365,7 +362,6 @@
 				2A707E542ADEAD7A000830CD /* AuthScreenError.swift in Sources */,
 				2A707E582AE1322F000830CD /* ReadmeError.swift in Sources */,
 				2AF036212AC5A8A8009C3341 /* EmptyView.swift in Sources */,
-				2AF554882AEF9E250077CAC5 /* NSErrorExtensions.swift in Sources */,
 				2A69985D2ADE6A6400010B9E /* DetailsScrenState.swift in Sources */,
 				2AF036012AC2F1D1009C3341 /* RepoTableViewCell.swift in Sources */,
 			);

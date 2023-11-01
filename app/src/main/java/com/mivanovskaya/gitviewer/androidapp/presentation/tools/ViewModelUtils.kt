@@ -1,8 +1,8 @@
 package com.mivanovskaya.gitviewer.androidapp.presentation.tools
 
 import com.mivanovskaya.gitviewer.androidapp.R
-import com.mivanovskaya.gitviewer.shared.data.BadSerializationException
-import com.mivanovskaya.gitviewer.shared.data.NoInternetException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.BadSerializationException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.NoInternetException
 
 suspend fun <T> requestWithErrorHandling(
     block: suspend () -> Unit,
@@ -16,6 +16,6 @@ suspend fun <T> requestWithErrorHandling(
     } catch (e: BadSerializationException) {
         setState(errorFactory(false, StringValue.StringResource(R.string.serialization_error)))
     } catch (e: Exception) {
-        setState(errorFactory(false, StringValue.DynamicString(e.message.toString())))
+        setState(errorFactory(false, StringValue.StringResource(R.string.server_connection_error)))
     }
 }

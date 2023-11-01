@@ -64,10 +64,11 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
                         && !state.readmeState.isNetworkError)
 
             val errorText =
-                if (state is State.Error && !state.isNetworkError ||
-                    state is State.Loaded && state.readmeState is ReadmeState.Error
-                            && !state.readmeState.isNetworkError)
-                    getString(R.string.error)
+                if (state is State.Error && !state.isNetworkError)
+                    state.error.asString(requireContext())
+                else if (state is State.Loaded && state.readmeState is ReadmeState.Error
+                    && !state.readmeState.isNetworkError)
+                    state.readmeState.error.asString(requireContext())
                 else null
 
             error.errorDescription.text = errorText

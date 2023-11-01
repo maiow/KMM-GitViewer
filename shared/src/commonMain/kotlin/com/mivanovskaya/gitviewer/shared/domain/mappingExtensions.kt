@@ -8,16 +8,16 @@ import com.mivanovskaya.gitviewer.shared.domain.model.Repo
 import com.mivanovskaya.gitviewer.shared.domain.model.RepoDetails
 import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
 
-fun UserInfoDto.toUserInfo() = UserInfo(login)
+internal fun UserInfoDto.toUserInfo() = UserInfo(login)
 
-fun RepoDto.toRepo() = Repo(
+internal fun RepoDto.toRepo() = Repo(
     descriptionText = description,
     id = id,
     language = language,
     name = name
 )
 
-fun RepoDto.toRepoDetails() = RepoDetails(
+internal fun RepoDto.toRepoDetails() = RepoDetails(
     descriptionText = description,
     forksCount = forksCount,
     htmlUrl = htmlUrl,
@@ -31,4 +31,4 @@ fun RepoDto.toRepoDetails() = RepoDetails(
     defaultBranch = defaultBranch
 )
 
-fun LicenseDto.toLicense() = License(name)
+internal fun LicenseDto.toLicense() = License(name)

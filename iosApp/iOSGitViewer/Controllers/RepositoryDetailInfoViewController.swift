@@ -163,44 +163,49 @@ final class RepositoryDetailInfoViewController: UIViewController {
     
     private func getRepoReadme(repo: shared.RepoDetails, ownerName: String, repositoryName: String, branchName: String) {
         
-//        appRepository.getRepositoryReadme(ownerName: ownerName, repositoryName: repositoryName, branchName: branchName, queue: DispatchQueue.main) { [weak self] result in
-//            
-//            guard let self = self else { return }
-//            
-//            switch result {
-//            case .success(let readmeString): self.handleReadmeSuccess(repo: repo, readme: readmeString)
-//            case .failure(let error): self.handleReadmeFailure(repo: repo, error: error)
-//            }
-//        }
+        appRepository.getRepositoryReadme(ownerName: ownerName, repositoryName: repositoryName, branchName: branchName) { [weak self] readme, error in
+            
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                guard error == nil else {
+                    guard let error = error as NSError? else {
+                        fatalError("Unknown error of non-NSError type")
+                    }
+                    self.handleReadmeFailure(repo: repo, error: error)
+                    return
+                }
+                self.handleReadmeSuccess(repo: repo, readme: readme)
+            }
+        }
     }
     
-    private func handleReadmeSuccess(repo repoInfo: shared.RepoDetails, readme readmeString: String) {
+    private func handleReadmeSuccess(repo repoInfo: shared.RepoDetails, readme readmeString: String?) {
         
-        self.state = .success(repo: repoInfo, readmeState: ReadmeState.success(readme: readmeString))
+        guard readmeString != nil else {
+            print("Readme is empty!")
+            self.readmeSpinner.stopAnimating()
+            self.state = .success(repo: repoInfo, readmeState: ReadmeState.empty)
+            return
+        }
+        self.state = .success(repo: repoInfo, readmeState: ReadmeState.success(readme: readmeString!))
         self.readmeSpinner.stopAnimating()
+        
     }
     
-    private func handleReadmeFailure(repo repoInfo: shared.RepoDetails, error: ReadmeError) {
+    private func handleReadmeFailure(repo repoInfo: shared.RepoDetails, error: NSError) {
         
         self.readmeSpinner.stopAnimating()
         
-//        switch error {
-//        case .noInternet:
-//            self.state = .success(repo: repoInfo, readmeState: ReadmeState.noInternet)
-//            
-//        case .noReadme:
-//            self.state = .success(
-//                repo: repoInfo,
-//                readmeState: ReadmeState.empty
-//            )
-//            
-//        case .otherError(let error):
-//            self.state = .success(
-//                repo: repoInfo,
-//                readmeState: ReadmeState.error(error: error)
-//            )
-//            print("Readme error: \(error.localizedDescription)")
-//        }
+        if error.kotlinException is NoInternetException {
+            self.state = .success(repo: repoInfo, readmeState: ReadmeState.noInternet)
+        }else {
+            self.state = .success(
+                repo: repoInfo,
+                readmeState: ReadmeState.error(error: error)
+            )
+            print("Readme error: \(error.localizedDescription)")
+        }
     }
     
     private func showRepoInfo(with repo: shared.RepoDetails) {

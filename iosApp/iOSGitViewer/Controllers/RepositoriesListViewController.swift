@@ -91,11 +91,8 @@ final class RepositoriesListViewController: UIViewController {
         
         appRepository.getRepositories(limit: 10, page: 1, completionHandler: { [weak self] repos, error in
             guard let self = self else { return }
-            //TODO: clean up
-            print("Running completion handler on \(Thread.current)")
             
             DispatchQueue.main.async {
-                print("Now switched completion handler to \(Thread.current)")
                 self.spinner.stopAnimating()
                 
                 guard let repos = repos, error == nil else {
