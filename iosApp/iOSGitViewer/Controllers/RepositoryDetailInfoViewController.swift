@@ -148,8 +148,7 @@ final class RepositoryDetailInfoViewController: UIViewController {
     
     private func handleRepoInfoSuccess(_ repoInfo: shared.RepoDetails) {
         self.showRepoInfo(with: repoInfo)
-        self.state = .success(repo: repoInfo, readmeState: ReadmeState.loading)
-        self.readmeSpinner.startAnimating()
+        self.state = .success(repo: repoInfo, readmeState: nil)
         getRepoReadme(repo: repoInfo, ownerName: repoInfo.owner, repositoryName: repoInfo.name, branchName: repoInfo.defaultBranch)
     }
     
@@ -164,6 +163,9 @@ final class RepositoryDetailInfoViewController: UIViewController {
     }
     
     private func getRepoReadme(repo: shared.RepoDetails, ownerName: String, repositoryName: String, branchName: String) {
+        
+        self.state = .success(repo: repo, readmeState: ReadmeState.loading)
+        readmeSpinner.startAnimating()
         
         appRepository.getRepositoryReadme(ownerName: ownerName, repositoryName: repositoryName, branchName: branchName) { [weak self] readme, error in
             

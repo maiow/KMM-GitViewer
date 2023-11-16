@@ -65,10 +65,7 @@ final class RepositoriesListViewController: UIViewController {
         retryButton.isHidden = (state.isLoading || state.isSuccess)
         emptyView.isHidden = !state.isEmpty
         
-        if state.isSuccess {
-            self.tableView.reloadData()
-        }
-        
+        self.tableView.reloadData()
         setErrorDescriptionText(with: state)
     }
     
@@ -97,6 +94,7 @@ final class RepositoriesListViewController: UIViewController {
                 
                 guard let repos = repos, error == nil else {
                     guard let error = error as NSError? else {
+                        // TODO: спросить, возможны ли тут не NSError вообще?
                         fatalError("Unknown error of non-NSError type")
                     }
                     self.handleFailure(error)

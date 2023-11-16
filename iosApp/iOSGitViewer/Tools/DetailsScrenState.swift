@@ -10,7 +10,7 @@ import shared
 
 enum DetailScreenState {
     case loading
-    case success(repo: shared.RepoDetails, readmeState: ReadmeState)
+    case success(repo: shared.RepoDetails, readmeState: ReadmeState?)
     case error(_ cause: NSError)
     case noInternet
     
@@ -44,29 +44,45 @@ enum DetailScreenState {
     
     var isSuccessReadme: Bool {
         switch self {
-        case .success(_, let readmeState): readmeState.isSuccessReadme
-        default: false
+        case .success(_, let readmeState):
+            guard let readmeState = readmeState else {
+                return false
+            }
+            return readmeState.isSuccessReadme
+        default: return false
         }
     }
     
     var isNoInternetReadme: Bool {
         switch self {
-        case .success(_, let readmeState): readmeState.isNoInternet
-        default: false
+        case .success(_, let readmeState):
+            guard let readmeState = readmeState else {
+                return false
+            }
+            return readmeState.isNoInternet
+        default: return false
         }
     }
     
     var isErrorReadme: Bool {
         switch self {
-        case .success(_, let readmeState): readmeState.isError
-        default: false
+        case .success(_, let readmeState):
+            guard let readmeState = readmeState else {
+                return false
+            }
+            return readmeState.isError
+        default: return false
         }
     }
     
     var isEmptyReadme: Bool {
         switch self {
-        case .success(_, let readmeState): readmeState.isEmpty
-        default: false
+        case .success(_, let readmeState):
+            guard let readmeState = readmeState else {
+                return false
+            }
+            return readmeState.isEmpty
+        default: return false
         }
     }
 }

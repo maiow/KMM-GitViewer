@@ -23,14 +23,17 @@ final class RepoTableViewCell: UITableViewCell {
     }
     
     func update(with repo: shared.Repo) {
-
-        repoNameLabel.text = repo.name 
-        languageLabel.text = repo.language ?? ""
-        repoDescriptionLabel.text = repo.descriptionText
         
-        let color = switch (repo.language) {
-        case Language.Kotlin.rawValue : UIColor(named: "AppLilac")
-        case Language.Swift.rawValue : UIColor(named: "AppYellow")
+        repoNameLabel.text = repo.name
+        languageLabel.text = repo.language ?? ""
+        setLanguageLabelColor(language: repo.language)
+    }
+    
+    private func setLanguageLabelColor(language: String?) {
+        
+        let color = switch (language) {
+        case "Kotlin" : UIColor(named: "AppLilac")
+        case "Swift" : UIColor(named: "AppYellow")
         default : UIColor(named: "AppGreen")
         }
         

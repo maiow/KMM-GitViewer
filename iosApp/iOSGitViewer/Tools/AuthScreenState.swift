@@ -11,7 +11,7 @@ enum AuthScreenState {
     case initial
     case loading
     case invalidToken
-    case error(_ cause: AuthScreenError)
+    case error(_ cause: AuthError)
     
     var isLoading: Bool {
         switch self {

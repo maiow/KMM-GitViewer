@@ -16,9 +16,10 @@
 		2A69985D2ADE6A6400010B9E /* DetailsScrenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A69985C2ADE6A6400010B9E /* DetailsScrenState.swift */; };
 		2A69985F2ADE6A8600010B9E /* AuthScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A69985E2ADE6A8600010B9E /* AuthScreenState.swift */; };
 		2A6C66522ACAFD02000C34C1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 2A6C66512ACAFD02000C34C1 /* Localizable.xcstrings */; };
-		2A707E542ADEAD7A000830CD /* AuthScreenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A707E532ADEAD7A000830CD /* AuthScreenError.swift */; };
+		2A707E542ADEAD7A000830CD /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A707E532ADEAD7A000830CD /* AuthError.swift */; };
 		2A707E562AE10EF8000830CD /* ReposError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A707E552AE10EF7000830CD /* ReposError.swift */; };
 		2A707E582AE1322F000830CD /* ReadmeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A707E572AE1322F000830CD /* ReadmeError.swift */; };
+		2AA02D772B065CD8006BBACF /* ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA02D762B065CD8006BBACF /* ErrorExtension.swift */; };
 		2ABC60F82ABB0AB200784EA0 /* RepositoriesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABC60F62ABB0AB200784EA0 /* RepositoriesListViewController.swift */; };
 		2ABC60F92ABB0AB200784EA0 /* RepositoriesListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2ABC60F72ABB0AB200784EA0 /* RepositoriesListViewController.xib */; };
 		2AED54202AE69B38008E5D6B /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AED541F2AE69B38008E5D6B /* UIViewControllerExtensions.swift */; };
@@ -26,7 +27,6 @@
 		2AED54282AE7D52A008E5D6B /* ReadmeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AED54272AE7D52A008E5D6B /* ReadmeState.swift */; };
 		2AF036012AC2F1D1009C3341 /* RepoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF035FF2AC2F1D1009C3341 /* RepoTableViewCell.swift */; };
 		2AF036022AC2F1D1009C3341 /* RepoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF036002AC2F1D1009C3341 /* RepoTableViewCell.xib */; };
-		2AF036052AC32A5F009C3341 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF036042AC32A5E009C3341 /* Language.swift */; };
 		2AF036072AC3FAF1009C3341 /* KeyboardAwareAnimatedConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF036062AC3FAF1009C3341 /* KeyboardAwareAnimatedConstraint.swift */; };
 		2AF036092AC3FCAC009C3341 /* ReposScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF036082AC3FCAC009C3341 /* ReposScreenState.swift */; };
 		2AF0360F2AC47A46009C3341 /* ErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF0360E2AC47A46009C3341 /* ErrorView.xib */; };
@@ -54,9 +54,10 @@
 		2A69985C2ADE6A6400010B9E /* DetailsScrenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsScrenState.swift; sourceTree = "<group>"; };
 		2A69985E2ADE6A8600010B9E /* AuthScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthScreenState.swift; sourceTree = "<group>"; };
 		2A6C66512ACAFD02000C34C1 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		2A707E532ADEAD7A000830CD /* AuthScreenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthScreenError.swift; sourceTree = "<group>"; };
+		2A707E532ADEAD7A000830CD /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		2A707E552AE10EF7000830CD /* ReposError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposError.swift; sourceTree = "<group>"; };
 		2A707E572AE1322F000830CD /* ReadmeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadmeError.swift; sourceTree = "<group>"; };
+		2AA02D762B065CD8006BBACF /* ErrorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorExtension.swift; sourceTree = "<group>"; };
 		2ABC60F62ABB0AB200784EA0 /* RepositoriesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesListViewController.swift; sourceTree = "<group>"; };
 		2ABC60F72ABB0AB200784EA0 /* RepositoriesListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepositoriesListViewController.xib; sourceTree = "<group>"; };
 		2AED541F2AE69B38008E5D6B /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 		2AED54272AE7D52A008E5D6B /* ReadmeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadmeState.swift; sourceTree = "<group>"; };
 		2AF035FF2AC2F1D1009C3341 /* RepoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoTableViewCell.swift; sourceTree = "<group>"; };
 		2AF036002AC2F1D1009C3341 /* RepoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepoTableViewCell.xib; sourceTree = "<group>"; };
-		2AF036042AC32A5E009C3341 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		2AF036062AC3FAF1009C3341 /* KeyboardAwareAnimatedConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAwareAnimatedConstraint.swift; sourceTree = "<group>"; };
 		2AF036082AC3FCAC009C3341 /* ReposScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposScreenState.swift; sourceTree = "<group>"; };
 		2AF0360E2AC47A46009C3341 /* ErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorView.xib; sourceTree = "<group>"; };
@@ -178,9 +178,8 @@
 		2AF036032AC32A53009C3341 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				2AF036042AC32A5E009C3341 /* Language.swift */,
 				2AF036062AC3FAF1009C3341 /* KeyboardAwareAnimatedConstraint.swift */,
-				2A707E532ADEAD7A000830CD /* AuthScreenError.swift */,
+				2A707E532ADEAD7A000830CD /* AuthError.swift */,
 				2A707E552AE10EF7000830CD /* ReposError.swift */,
 				2A707E572AE1322F000830CD /* ReadmeError.swift */,
 				2AED541F2AE69B38008E5D6B /* UIViewControllerExtensions.swift */,
@@ -189,6 +188,7 @@
 				2AF036082AC3FCAC009C3341 /* ReposScreenState.swift */,
 				2A69985C2ADE6A6400010B9E /* DetailsScrenState.swift */,
 				2AED54272AE7D52A008E5D6B /* ReadmeState.swift */,
+				2AA02D762B065CD8006BBACF /* ErrorExtension.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -356,13 +356,13 @@
 				2AF036172AC54E7D009C3341 /* NoInternetView.swift in Sources */,
 				2ABC60F82ABB0AB200784EA0 /* RepositoriesListViewController.swift in Sources */,
 				2AED54222AE6A546008E5D6B /* UINavigationControllerExtensions.swift in Sources */,
-				2AF036052AC32A5F009C3341 /* Language.swift in Sources */,
 				2AF036072AC3FAF1009C3341 /* KeyboardAwareAnimatedConstraint.swift in Sources */,
 				2AED54202AE69B38008E5D6B /* UIViewControllerExtensions.swift in Sources */,
-				2A707E542ADEAD7A000830CD /* AuthScreenError.swift in Sources */,
+				2A707E542ADEAD7A000830CD /* AuthError.swift in Sources */,
 				2A707E582AE1322F000830CD /* ReadmeError.swift in Sources */,
 				2AF036212AC5A8A8009C3341 /* EmptyView.swift in Sources */,
 				2A69985D2ADE6A6400010B9E /* DetailsScrenState.swift in Sources */,
+				2AA02D772B065CD8006BBACF /* ErrorExtension.swift in Sources */,
 				2AF036012AC2F1D1009C3341 /* RepoTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
