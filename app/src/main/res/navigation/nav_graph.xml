@@ -37,6 +37,9 @@
         <argument
             android:name="repoName"
             app:argType="string" />
+        <argument
+            android:name="ownerName"
+            app:argType="string" />
         <action
             android:id="@+id/action_detailInfoFragment_to_authFragment"
             app:destination="@id/authFragment"

@@ -151,7 +151,7 @@ extension RepositoriesListViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vc = RepositoryDetailInfoViewController(repo: repositories[indexPath.row])
+        let vc = RepositoryDetailInfoViewController(repoName: repositories[indexPath.row].name, repoOwner: repositories[indexPath.row].owner)
         navigationController!.pushViewController(vc, animated: true)
     }
 }

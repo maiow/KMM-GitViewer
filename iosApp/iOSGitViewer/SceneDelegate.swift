@@ -22,10 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             vc = AuthViewController()
             myWindow.rootViewController = vc
         } else {
-            let navController = UINavigationController()
+            let navController = UINavigationController.styled()
             vc = RepositoriesListViewController()
             navController.viewControllers = [vc]
-            navController.styled()
             myWindow.rootViewController = navController
         }
         self.window = myWindow

@@ -13,7 +13,8 @@ final class RepositoryDetailInfoViewController: UIViewController {
     
     private let appRepository: AppRepository = AppRepositoryHelper().repository
     
-    private let repo: shared.Repo
+    private let repoName: String
+    private let repoOwner: String
     
     private var state: DetailScreenState = .loading {
         didSet {
@@ -21,8 +22,9 @@ final class RepositoryDetailInfoViewController: UIViewController {
         }
     }
     
-    init(repo: shared.Repo) {
-        self.repo = repo
+    init(repoName: String, repoOwner: String) {
+        self.repoName = repoName
+        self.repoOwner = repoOwner
         super.init(nibName: "RepositoryDetailInfoViewController", bundle: nil)
     }
     
@@ -57,7 +59,7 @@ final class RepositoryDetailInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = repo.name
+        navigationItem.title = repoName
         licenseTitleLabel.text = NSLocalizedString("license", comment: "")
         
         self.addLogoutButton(selector: #selector(didTapLogout))
@@ -126,7 +128,7 @@ final class RepositoryDetailInfoViewController: UIViewController {
     private func fetchRepositoryInfo() {
         state = .loading
         
-        appRepository.getRepository(repoName: repo.name) { [weak self] repo, error in
+        appRepository.getRepository(repoName: repoName, ownerName: repoOwner) { [weak self] repo, error in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -148,7 +150,7 @@ final class RepositoryDetailInfoViewController: UIViewController {
         self.showRepoInfo(with: repoInfo)
         self.state = .success(repo: repoInfo, readmeState: ReadmeState.loading)
         self.readmeSpinner.startAnimating()
-        getRepoReadme(repo: repoInfo, ownerName: repoInfo.owner, repositoryName: repo.name, branchName: repoInfo.defaultBranch)
+        getRepoReadme(repo: repoInfo, ownerName: repoInfo.owner, repositoryName: repoInfo.name, branchName: repoInfo.defaultBranch)
     }
     
     private func handleRepoInfoFailure(_ error: NSError) {

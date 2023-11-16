@@ -14,7 +14,8 @@ internal fun RepoDto.toRepo() = Repo(
     descriptionText = description,
     id = id,
     language = language,
-    name = name
+    name = name,
+    owner = owner.login
 )
 
 internal fun RepoDto.toRepoDetails() = RepoDetails(

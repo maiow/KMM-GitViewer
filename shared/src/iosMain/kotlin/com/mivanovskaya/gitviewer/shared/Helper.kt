@@ -16,16 +16,27 @@ class AppRepositoryHelper : KoinComponent {
     fun getToken(): String? = repository.getToken()
     fun resetToken() = repository.resetToken()
     fun saveCredentials(login: String, token: String) =
-        repository.saveCredentials(login = login, token = token)
+        repository.saveCredentials(
+            login = login,
+            token = token
+        )
 
     fun logout() = repository.logout()
 
     suspend fun getRepositories(
         limit: Int,
         page: Int
-    ): List<Repo> = repository.getRepositories(limit = limit, page = page)
+    ): List<Repo> = repository.getRepositories(
+        limit = limit,
+        page = page
+    )
 
-    suspend fun getRepository(repoName: String): RepoDetails = repository.getRepository(repoName)
+    suspend fun getRepository(repoName: String, ownerName: String): RepoDetails =
+        repository.getRepository(
+            repoName = repoName,
+            ownerName = ownerName
+        )
+
     suspend fun getRepositoryReadme(
         ownerName: String,
         repositoryName: String,

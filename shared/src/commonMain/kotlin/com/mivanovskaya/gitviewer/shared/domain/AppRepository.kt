@@ -13,7 +13,7 @@ interface AppRepository {
     ): List<Repo>
 
     @Throws(Exception::class)
-    suspend fun getRepository(repoName: String): RepoDetails
+    suspend fun getRepository(repoName: String, ownerName: String): RepoDetails
 
     @Throws(Exception::class)
     suspend fun getRepositoryReadme(

@@ -9,11 +9,13 @@ import Foundation
 import UIKit
 
 extension UINavigationController {
-    func styled() {
-        navigationBar.isTranslucent = false
-        navigationBar.titleTextAttributes = [
+    static func styled() -> UINavigationController {
+            let nc = UINavigationController()
+            nc.navigationBar.isTranslucent = false
+            nc.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor:UIColor.white,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .semibold)
         ]
+        return nc
     }
 }

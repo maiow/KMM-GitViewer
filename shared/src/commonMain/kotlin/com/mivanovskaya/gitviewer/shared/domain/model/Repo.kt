@@ -4,7 +4,8 @@ data class Repo(
     val descriptionText: String?,
     val id: Int,
     val language: String?,
-    val name: String
+    val name: String,
+    val owner: String
 )
 
 data class RepoDetails(

@@ -141,11 +141,9 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
     
     private func navigateToRepositoriesList() {
         
-        let navController = UINavigationController()
+        let navController = UINavigationController.styled()
         let vc = RepositoriesListViewController()
-        
         self.view.window?.rootViewController = navController
-        navController.styled()
         navController.pushViewController(vc, animated: true)
     }
 }

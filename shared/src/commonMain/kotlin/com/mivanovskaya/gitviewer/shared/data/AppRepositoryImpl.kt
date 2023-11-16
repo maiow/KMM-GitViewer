@@ -140,33 +140,32 @@ internal class AppRepositoryImpl(
             }
         }
 
-    override suspend fun getRepository(repoName: String): RepoDetails = withContext(ioDispatcher) {
-        try {
-            val repo: RepoDto = client.get(REPOS_URL) {
-                url {
-                    appendPathSegments(
-                        requireNotNull(keyValueStorage.login) {
-                            "Error: authorized username not found in storage"
-                        },
-                        repoName
-                    )
-                }
-            }.body()
-            repo.toRepoDetails()
+    override suspend fun getRepository(repoName: String, ownerName: String): RepoDetails =
+        withContext(ioDispatcher) {
+            try {
+                val repo: RepoDto = client.get(REPOS_URL) {
+                    url {
+                        appendPathSegments(
+                            ownerName,
+                            repoName
+                        )
+                    }
+                }.body()
+                repo.toRepoDetails()
 
-        } catch (e: JsonConvertException) {
-            Napier.d(tag = "Napier", message = "Serialization exception: ${e.message}")
-            throw BadSerializationException(e.message.toString())
+            } catch (e: JsonConvertException) {
+                Napier.d(tag = "Napier", message = "Serialization exception: ${e.message}")
+                throw BadSerializationException(e.message.toString())
 
-        } catch (e: IOException) {
-            Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
-            throw NoInternetException(e.message.toString())
+            } catch (e: IOException) {
+                Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
+                throw NoInternetException(e.message.toString())
 
-        } catch (e: Exception) {
-            Napier.e("Napier: Some error: ", e)
-            throw e
+            } catch (e: Exception) {
+                Napier.e("Napier: Some error: ", e)
+                throw e
+            }
         }
-    }
 
     override suspend fun getRepositoryReadme(
         ownerName: String, repositoryName: String, branchName: String

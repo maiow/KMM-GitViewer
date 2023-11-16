@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class RepositoryInfoViewModel(
     private val repository: AppRepository,
-    private val repoName: String
+    private val repoName: String,
+    private val ownerName: String
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State.Loading)
@@ -22,20 +23,30 @@ class RepositoryInfoViewModel(
     private var job: Job? = null
 
     init {
-        getRepoInfo(repoName)
+        getRepoInfo(
+            repoName = repoName,
+            ownerName = ownerName
+        )
     }
 
     fun onLogoutButtonPressed(): Unit = repository.logout()
 
-    fun onRetryButtonClick(): Unit = getRepoInfo(repoName)
+    fun onRetryButtonClick(): Unit = getRepoInfo(
+        repoName = repoName,
+        ownerName = ownerName
+    )
 
-    private fun getRepoInfo(repoName: String) {
+    private fun getRepoInfo(repoName: String, ownerName: String) {
         job?.cancel()
         job = viewModelScope.launch {
             requestWithErrorHandling(
                 block = {
                     _state.value = State.Loading
-                    val repo: RepoDetails = repository.getRepository(repoName)
+                    val repo: RepoDetails =
+                        repository.getRepository(
+                            repoName = repoName,
+                            ownerName = ownerName
+                        )
                     val newState = State.Loaded(repo, ReadmeState.Loading)
                     _state.value = newState
                     getReadme(newState)

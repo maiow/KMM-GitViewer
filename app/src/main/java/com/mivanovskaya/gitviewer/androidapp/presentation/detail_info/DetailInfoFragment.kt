@@ -29,7 +29,12 @@ import org.koin.core.parameter.parametersOf
 class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
 
     private val args: DetailInfoFragmentArgs by navArgs()
-    private val viewModel: RepositoryInfoViewModel by viewModel { parametersOf(args.repoName) }
+    private val viewModel: RepositoryInfoViewModel by viewModel {
+        parametersOf(
+            args.repoName,
+            args.ownerName
+        )
+    }
 
     override fun initBinding(inflater: LayoutInflater) = FragmentDetailInfoBinding.inflate(inflater)
 
@@ -67,7 +72,8 @@ class DetailInfoFragment : BaseFragment<FragmentDetailInfoBinding>() {
                 if (state is State.Error && !state.isNetworkError)
                     state.error.asString(requireContext())
                 else if (state is State.Loaded && state.readmeState is ReadmeState.Error
-                    && !state.readmeState.isNetworkError)
+                    && !state.readmeState.isNetworkError
+                )
                     state.readmeState.error.asString(requireContext())
                 else null
 

@@ -77,7 +77,7 @@ class RepositoriesListFragment : BaseFragment<FragmentRepositoriesListBinding>()
     private fun onItemClick(item: Repo) {
         findNavController().navigate(
             RepositoriesListFragmentDirections
-                .actionRepositoriesListFragmentToDetailInfoFragment(item.name)
+                .actionRepositoriesListFragmentToDetailInfoFragment(item.name, item.owner)
         )
     }
 
