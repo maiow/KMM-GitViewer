@@ -8,6 +8,7 @@ import com.mivanovskaya.gitviewer.androidapp.presentation.tools.StringValue.Stri
 import com.mivanovskaya.gitviewer.shared.data.exceptions.BadSerializationException
 import com.mivanovskaya.gitviewer.shared.data.exceptions.InvalidTokenException
 import com.mivanovskaya.gitviewer.shared.data.exceptions.NoInternetException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.ServerConnectionException
 import com.mivanovskaya.gitviewer.shared.domain.AppRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
@@ -56,9 +57,15 @@ class AuthViewModel(private val repository: AppRepository) : ViewModel() {
                 }
             }
 
-            else -> {
+            is ServerConnectionException -> {
                 viewModelScope.launch {
                     _actions.send(Action.ShowError(StringResource(R.string.server_connection_error)))
+                }
+            }
+
+            else -> {
+                viewModelScope.launch {
+                    _actions.send(Action.ShowError(StringResource(R.string.unknown_error)))
                 }
             }
         }

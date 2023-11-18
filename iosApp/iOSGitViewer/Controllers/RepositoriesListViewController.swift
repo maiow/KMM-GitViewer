@@ -71,13 +71,7 @@ final class RepositoriesListViewController: UIViewController {
     
     private func setErrorDescriptionText(with state: ReposScreenState) {
         let errorText = switch state {
-        case .error(let error): {
-            if let serializationError = error.kotlinException as? BadSerializationException  {
-                NSLocalizedString("uncorrectServerData", comment: "")
-            } else {
-                NSLocalizedString("serverConnectionError", comment: "")
-            }
-        }()
+        case .error(let error): error.userDescription()
         default: ""
         }
         self.errorView.setErrorDescriptionText(errorText)
@@ -94,8 +88,9 @@ final class RepositoriesListViewController: UIViewController {
                 
                 guard let repos = repos, error == nil else {
                     guard let error = error as NSError? else {
-                        // TODO: спросить, возможны ли тут не NSError вообще?
-                        fatalError("Unknown error of non-NSError type")
+                        //Crashlytics.shared().log("Unknown error of non-NSError type")
+                        //TODO: somehow show error View with "unknown error" message
+                        return
                     }
                     self.handleFailure(error)
                     return

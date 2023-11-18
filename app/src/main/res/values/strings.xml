@@ -17,6 +17,7 @@
     <string name="error_with_description">Error %1$s</string>
     <string name="something_error">Something error</string>
     <string name="server_connection_error">Server connection error</string>
+    <string name="unknown_error">Unknown error</string>
     <string name="serialization_error">Incorrect data got from the server</string>
     <string name="logo">logo</string>
     <string name="license">License</string>

@@ -26,6 +26,7 @@ final class RepoTableViewCell: UITableViewCell {
         
         repoNameLabel.text = repo.name
         languageLabel.text = repo.language ?? ""
+        repoDescriptionLabel.text = repo.descriptionText ?? ""
         setLanguageLabelColor(language: repo.language)
     }
     

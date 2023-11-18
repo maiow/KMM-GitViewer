@@ -91,18 +91,17 @@ final class RepositoryDetailInfoViewController: UIViewController {
     
     private func setErrorDescriptionText(with state: DetailScreenState) {
         let errorText = switch state {
-        case .error(let error),
-                .success(_, readmeState: .error(let error)): {
-                    if let serializationError = error.kotlinException as? BadSerializationException  {
-                        NSLocalizedString("uncorrectServerData", comment: "")
-                    } else {
-                        NSLocalizedString("serverConnectionError", comment: "")
-                    }
-                }()
+        case .error(let error): error.userDescription()
         default: ""
         }
         self.errorView.setErrorDescriptionText(errorText)
-        self.readmeErrorView.setErrorDescriptionText(errorText)
+        
+        let readmeErrorText = switch state {
+        case .success(_, readmeState: .error(let error)): error.userDescription()
+        default: ""
+        }
+        self.readmeErrorView.setErrorDescriptionText(readmeErrorText)
+        
     }
     
     private func showReadmeText(with state: DetailScreenState) {
@@ -136,7 +135,12 @@ final class RepositoryDetailInfoViewController: UIViewController {
                 
                 guard let repoInfo = repo, error == nil else {
                     guard let error = error as NSError? else {
-                        fatalError("Unknown error of non-NSError type")
+                        //TODO: решить и дописать
+                        //Crashlytics.crashlytics().record(error: error)
+                        print("Unknown error of non-NSError type")
+//                        Cannot convert value of type '(any Error)?' to expected argument type 'NSError':
+                      //  self.state = .error(error)
+                        return
                     }
                     self.handleRepoInfoFailure(error)
                     return

@@ -5,6 +5,7 @@
     <string name="invalid_token">Неверный токен</string>
     <string name="repositories">Репозитории</string>
     <string name="connection_error">Ошибка соединения</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
     <string name="check_network">Проверьте соединение с Интернетом</string>
     <string name="empty">Пусто</string>
     <string name="no_repositories">В настоящее время репозиториев нет</string>
