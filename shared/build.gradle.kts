@@ -54,10 +54,11 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.crypto)
         }
-
-        val iosMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.darwin)
+        if (HostManager.hostIsMac) {
+            val iosMain by getting {
+                dependencies {
+                    implementation(libs.ktor.client.darwin)
+                }
             }
         }
     }
