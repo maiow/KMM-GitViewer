@@ -110,6 +110,7 @@
 				2A167FE82ABAC3830048E6C8 /* Products */,
 				1DAB402B5BCDC0B44EA8BD60 /* Pods */,
 				E497A8A38F7147A81D61CB1D /* Frameworks */,
+				82B069FF9533D174FF35C2C7 /* xcschemes */,
 			);
 			sourceTree = "<group>";
 		};
@@ -191,6 +192,14 @@
 				2AA02D762B065CD8006BBACF /* ErrorExtension.swift */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		82B069FF9533D174FF35C2C7 /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = xcschemes;
+			path = iOSGitViewer.xcworkspace/xcuserdata/mivanovskaya.xcuserdatad/xcschemes;
 			sourceTree = "<group>";
 		};
 		E497A8A38F7147A81D61CB1D /* Frameworks */ = {

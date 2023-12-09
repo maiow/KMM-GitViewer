@@ -3,6 +3,7 @@ package com.mivanovskaya.gitviewer.shared.data
 import com.mivanovskaya.gitviewer.shared.data.exceptions.BadSerializationException
 import com.mivanovskaya.gitviewer.shared.data.exceptions.InvalidTokenException
 import com.mivanovskaya.gitviewer.shared.data.exceptions.NoInternetException
+import com.mivanovskaya.gitviewer.shared.data.exceptions.NoReadmeException
 import com.mivanovskaya.gitviewer.shared.data.exceptions.ServerConnectionException
 import com.mivanovskaya.gitviewer.shared.domain.model.UserInfo
 import io.github.aakira.napier.Napier
@@ -18,38 +19,38 @@ import kotlinx.coroutines.withContext
 suspend inline fun <reified T> requestWithExceptionsCatching(
     dispatcher: CoroutineDispatcher,
     crossinline block: suspend () -> T
-): T? {
+): T {
     return withContext(dispatcher) {
         try {
             block()
         } catch (e: JsonConvertException) {
             Napier.d(tag = "Napier", message = "Serialization exception: ${e.message}")
-            throw BadSerializationException(e.message.toString())
+            throw BadSerializationException(e)
 
         } catch (e: IOException) {
             Napier.d(tag = "Napier", message = "No Internet connection: ${e.message}")
-            throw NoInternetException(e.message.toString())
+            throw NoInternetException(e)
 
             //codes 300-399
         } catch (e: RedirectResponseException) {
             Napier.e("Napier: Redirect response exception: ${e.message}")
-            throw ServerConnectionException(e.message)
+            throw ServerConnectionException(e)
 
             //codes 400-499
         } catch (e: ClientRequestException) {
             Napier.e("Napier: Client request exception: ${e.message}")
             if (T::class == String::class && (e.response.status == HttpStatusCode.NotFound)) {
-                return@withContext null
+                throw NoReadmeException(e)
             } else if (T::class == UserInfo::class && (e.response.status == HttpStatusCode.Unauthorized)) {
-                throw InvalidTokenException(e.response.status.description)
+                throw InvalidTokenException(e)
             } else {
-                throw ServerConnectionException(e.message)
+                throw ServerConnectionException(e)
             }
 
             //codes 500-599
         } catch (e: ServerResponseException) {
             Napier.e("Napier: Server response exception: ${e.message}")
-            throw ServerConnectionException(e.message)
+            throw ServerConnectionException(e)
 
         } catch (e: Exception) {
             Napier.e("Napier: Some error: ", e)

@@ -60,7 +60,7 @@ internal class AppRepositoryImpl(
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Napier.v(" Napier HTTP Client", null, message)
+                    Napier.v(tag = " Napier HTTP Client", message = message)
                 }
             }
             level = LogLevel.HEADERS
@@ -78,7 +78,7 @@ internal class AppRepositoryImpl(
             updateBearerToken(token)
             val userInfoDto: UserInfoDto = client.get(USER_URL).body()
             userInfoDto.toUserInfo()
-        } as UserInfo
+        }
 
     override suspend fun getRepositories(limit: Int, page: Int): List<Repo> =
         requestWithExceptionsCatching(dispatcher = ioDispatcher) {
@@ -95,7 +95,7 @@ internal class AppRepositoryImpl(
                 }
             }.body()
             repos.map { it.toRepo() }
-        } as List<Repo>
+        }
 
     override suspend fun getRepository(repoName: String, ownerName: String): RepoDetails =
         requestWithExceptionsCatching(dispatcher = ioDispatcher) {
@@ -108,7 +108,7 @@ internal class AppRepositoryImpl(
                 }
             }.body()
             repo.toRepoDetails()
-        } as RepoDetails
+        }
 
     override suspend fun getRepositoryReadme(
         ownerName: String, repositoryName: String, branchName: String
